@@ -1,9 +1,60 @@
 import guizero as gz
+import socket
 
+class ARQRED:
+    def __init__(self):
+        self.dir_socket_servidor = ("158.42.188.200", 64010)
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    def iniciar_sesion(self, username, password):
+        ip = self.obtener_ip()
+        if ip:
+            try:
+                self.sock.connect(self.dir_socket_servidor)
+                self.sock.send(("HELLO " + ip + "\r\n").encode())
+                data = self.sock.recv(1024).decode()
+                if "200" in data:
+                    self.sock.send(("USER " + username + "\r\n").encode())
+                    data = self.sock.recv(1024).decode()
+                    if "200" in data:
+                        self.sock.send(("PASS " + password + "\r\n").encode())
+                        data = self.sock.recv(1024).decode()
+                        if "200" in data:
+                            print("Inicio de sesión exitoso.")
+                        else:
+                            print("Error: ", data)
+                    else:
+                        print("Error: ", data)
+                else:
+                    print("Error: ", data)
+            except Exception as e:
+                print("Error al conectar al servidor:", e)
+            finally:
+                self.sock.close()
+        else:
+            print("No se pudo obtener la dirección IP.")
+
+    def obtener_ip(self):
+        # Crear un socket TCP
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+        try:
+            # Conectar a un servidor remoto
+            sock.connect(("www.google.com", 80))
+            # Obtener la dirección IP, usamos este método ya que hay otros pero no funcionan si usas la VPN
+            ip = sock.getsockname()[0]
+            return ip
+        except Exception as e:
+            print("Error al obtener la dirección IP de la VPN:", e)
+            return None
+        finally:
+            # Cerrar el socket
+            sock.close()
 
 class GUI:
     def __init__(self):
         self.root = gz.App(title="APP")
+        self.arqred = ARQRED()
         self.abrir_ventana_bienvenida()
 
     def abrir_ventana_bienvenida(self):
@@ -18,17 +69,31 @@ class GUI:
                                        command=self.acceder_como_invitado)
         boton_invitado.tk.pack(pady=5)
 
-        boton_iniciar_sesion = gz.PushButton(ventana_bienvenida, text="Iniciar sesión", command=self.iniciar_sesion)
+        boton_iniciar_sesion = gz.PushButton(ventana_bienvenida, text="Acceder como usuario registrado", command=self.ventana_iniciar_sesion)
         boton_iniciar_sesion.tk.pack(pady=5)
 
     def acceder_como_invitado(self):
         # Lógica para acceder como invitado
         print("Accediendo como invitado")
 
-    def iniciar_sesion(self):
-        # Lógica para iniciar sesión
-        print("Iniciando sesión")
+    def ventana_iniciar_sesion(self):
+        # Crear ventana para iniciar sesión
+        ventana_login = gz.Window(self.root, title="Iniciar sesión")
 
+        # Añadir los labels y textboxes para introducir los datos
+        label_login = gz.Text(ventana_login, text="Nombre de usuario:")
+        label_login.tk.pack(pady=5)
+        usuario = gz.TextBox(ventana_login)
+        usuario.tk.pack(pady=5)
+
+        label_password = gz.Text(ventana_login, text="Contraseña:")
+        label_password.tk.pack(pady=5)
+        password = gz.TextBox(ventana_login, hide_text=True)
+        password.tk.pack(pady=5)
+
+        # Boton para entrar en la app
+        boton_iniciar_sesion = gz.PushButton(ventana_login, text="Iniciar sesión", command=lambda: self.arqred.iniciar_sesion(usuario.value, password.value))
+        boton_iniciar_sesion.tk.pack(pady=5)
 
 if __name__ == "__main__":
     gui = GUI()

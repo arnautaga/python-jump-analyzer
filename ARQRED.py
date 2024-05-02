@@ -31,11 +31,9 @@ def conectar_servidor(username, password):
             data_dec = data.decode()
         print("conectado")
 
-
-
     except Exception as e:
         print("Error al conectar al servidor:", e)
-        # Manejar el error apropiadamente, por ejemplo, cerrar el socket
+    finally:
         sock.close()
 
 if __name__ == "__main__":
