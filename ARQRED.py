@@ -26,7 +26,7 @@ def conectar_servidor(username, password):
             data_dec = data.decode()
         contador = 2
         while "200" != data_dec and contador == 2:
-            sock.send(("PASS" + str(password) + "\r\n"))
+            sock.send(("PASS" + str(password) + "\r\n").encode())
             data = sock.recv(1024)
             data_dec = data.decode()
         print("conectado")
