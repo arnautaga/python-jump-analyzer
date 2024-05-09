@@ -1,5 +1,7 @@
 import guizero as gz
 import socket
+import json
+import datetime
 
 class ARQRED:
     def __init__(self):
@@ -21,6 +23,7 @@ class ARQRED:
                         data = self.sock.recv(1024).decode()
                         if "200" in data:
                             print("Inicio de sesión exitoso.")
+                            self.username = username
                             gui.ventana_principal(True)
                         else:
                             print("Error: ", data)
@@ -30,8 +33,6 @@ class ARQRED:
                     print("Error: ", data)
             except Exception as e:
                 print("Error al conectar al servidor:", e)
-            finally:
-                self.sock.close()
         else:
             print("No se pudo obtener la dirección IP.")
 
@@ -51,6 +52,29 @@ class ARQRED:
         finally:
             # Cerrar el socket
             sock.close()
+
+    def is_json_string(self, txt):
+        return txt.startswith("{")
+
+    def obtener_leaderboard(self):
+        self.sock.send("GET_LEADERBOARD\r\n".encode())
+        data_unique = ""
+        data = []
+        fin = False
+        while fin == False:
+            data_unique = self.sock.recv(1024).decode()
+            lineas = data_unique.split("\r\n")[:-1]
+            for linea in lineas:
+                print(linea)
+                if self.is_json_string(linea):
+                    data += [json.loads(linea)]
+                if linea.startswith("202"):
+                    fin = True
+        return data
+
+    def enviar_salto(self, grupo, altura):
+        fecha = datetime.datetime.now().date()
+        datos = 'SEND_DATA{"nombre":' + self.username + ', "grupo_ProMu":' + grupo + ', "altura":' + str(altura) + ',"fecha":' + str(fecha) + '}\r\n'
 
 class GUI:
     def __init__(self):
@@ -104,10 +128,24 @@ class GUI:
         if loged:
             # Mostrar opciones para usuario logeado
             label = gz.Text(ventana_principal, text="¡Bienvenido!")
+            boton_leaderboard = gz.PushButton(ventana_principal, text="Ver Leaderboard", command=self.ver_leaderboard)
+            boton_leaderboard.tk.pack(pady=5)
         else:
             # Mostrar opciones para usuario invitado
             label = gz.Text(ventana_principal, text="¡Bienvenido, invitado!")
         label.tk.pack()
+
+    def ver_leaderboard(self):
+        if self.logeado:
+            leaderboard = self.arqred.obtener_leaderboard()
+            print(leaderboard)
+            # Mostrar leaderboard en una nueva ventana
+            ventana_leaderboard = gz.Window(self.root, title="Leaderboard")
+            for entry in leaderboard:
+                gz.Text(ventana_leaderboard, text=entry).tk.pack()
+                print(type(entry))
+        else:
+            print("Debe iniciar sesión para ver la leaderboard.")
 
 if __name__ == "__main__":
     gui = GUI()

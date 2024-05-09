@@ -4,7 +4,6 @@ from socket import *
 def conectar_servidor(username, password):
     # Dirección del servidor y puerto
     dir_socket_servidor = ("158.42.188.200", 64010)
-
     # Crear un objeto de socket TCP
     sock = socket(AF_INET, SOCK_STREAM)
 
@@ -12,8 +11,8 @@ def conectar_servidor(username, password):
         # Conectar al servidor
         data_dec = "a"
         contador = 0
+        sock.connect(dir_socket_servidor)
         while "200" != data_dec and contador == 0:
-            sock.connect(dir_socket_servidor)
             ip_equipo = gethostbyname(gethostname())
             sock.send(("HELLO " + str(ip_equipo)+"\r\n").encode())
             print(ip_equipo)
@@ -38,4 +37,5 @@ def conectar_servidor(username, password):
 
 if __name__ == "__main__":
     conectar_servidor("atabgar", 489)
+
 
