@@ -71,14 +71,47 @@ class ARQRED:
                 print(linea)
                 if self.is_json_string(linea):
                     data += [json.loads(linea)]
-                if linea.startswith("202"):
+                elif linea.startswith("202"):
                     fin = True
         return data
 
-    def enviar_salto(self, grupo, altura):
-        fecha = datetime.datetime.now().date()
-        datos = 'SEND_DATA{"nombre":' + self.username + ', "grupo_ProMu":' + grupo + ', "altura":' + str(altura) + ',"fecha":' + str(fecha) + '}\r\n'
+    def enviar_salto(self, grupo, altura, fecha):
+        datos = 'SEND_DATA{"nombre":' + "'" + self.username + "'" + ', "grupo_ProMu":' + grupo + ', "altura": ' + str(altura) + ',"fecha":' + "'" + str(fecha) + "'}\r\n"
+        2
+        print(datos)
+        self.sock.send(datos.encode())
+        print(self.sock.recv(1024).decode())
+        print(fecha)
 
+    def formato_fecha(self):
+        fecha = str(datetime.datetime.now().date())
+        fecha = fecha.split("-")
+        if fecha[1] == "01":
+            fecha[1] = "enero"
+        elif fecha[1] == "02":
+            fecha[1] = "febrero"
+        elif fecha[1] == "03":
+            fecha[1] = "marzo"
+        elif fecha[1] == "04":
+            fecha[1] = "abril"
+        elif fecha[1] == "05":
+            fecha[1] = "mayo"
+        elif fecha[1] == "06":
+            fecha[1] = "junio"
+        elif fecha[1] == "07":
+            fecha[1] = "julio"
+        elif fecha[1] == "08":
+            fecha[1] = "agosto"
+        elif fecha[1] == "09":
+            fecha[1] = "septiembre"
+        elif fecha[1] == "10":
+            fecha[1] = "octubre"
+        elif fecha[1] == "11":
+            fecha[1] = "noviembre"
+        elif fecha[1] == "12":
+            fecha[1] = "diciembre"
+        fecha = str(fecha[2]+ "-" +fecha[1]+ "-" +fecha[0])
+        return fecha
 class GUI:
     def __init__(self):
         self.root = gz.App(title="APP")
@@ -147,6 +180,9 @@ class GUI:
             label = gz.Text(self.principal_container, text="¡Bienvenido!")
             boton_leaderboard = gz.PushButton(self.principal_container, text="Ver Leaderboard", command=self.ver_leaderboard)
             boton_leaderboard.tk.pack(pady=5)
+            boton_enviar = gz.PushButton(self.principal_container, text="Enviar datos",
+                                              command=self.enviar_informacion)
+            boton_enviar.tk.pack(pady=5)
         else:
             # Mostrar opciones para usuario invitado
             self.bienvenida_container.show()
@@ -164,6 +200,23 @@ class GUI:
                 print(type(entry))
         else:
             print("Debe iniciar sesión para ver la leaderboard.")
+
+    def enviar_informacion(self):
+        def enviar_datos_aux(grupo_promu, altura, formato_fecha):
+            grupo_promu = str(grupo_promu)[27:]
+            altura = str(altura)[28:-1]
+            self.arqred.enviar_salto(grupo_promu, int(altura), formato_fecha)
+
+        if self.logeado:
+            ventana_send_data = gz.Window(self.root, title="Enviar informacion")
+            gz.Text(ventana_send_data, text="Grupo de ProMu:").tk.pack()
+            grupo_promu = gz.TextBox(ventana_send_data)
+
+            gz.Text(ventana_send_data, text="Altura:").tk.pack()
+            altura = gz.TextBox(ventana_send_data)
+
+            gz.PushButton(ventana_send_data, text="Enviar datos",
+                          command=lambda: enviar_datos_aux(grupo_promu, altura, self.arqred.formato_fecha()))
 
 
 if __name__ == "__main__":
