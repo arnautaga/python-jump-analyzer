@@ -39,6 +39,10 @@ class ARQRED:
         else:
             print("No se pudo obtener la dirección IP.")
 
+    def cerrar_sesion(self):
+        self.sock.send("QUIT\r\n".encode())
+        self.sock.close()
+
     def obtener_ip(self):
         # Crear un socket TCP
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
