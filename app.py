@@ -3,10 +3,12 @@ import socket
 import json
 import datetime
 
+
 class ARQRED:
     def __init__(self):
         self.dir_socket_servidor = ("158.42.188.200", 64010)
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
 
     def iniciar_sesion(self, username, password, gui):
         ip = self.obtener_ip()
@@ -39,9 +41,11 @@ class ARQRED:
         else:
             print("No se pudo obtener la dirección IP.")
 
+
     def cerrar_sesion(self):
         self.sock.send("QUIT\r\n".encode())
         self.sock.close()
+
 
     def obtener_ip(self):
         # Crear un socket TCP
@@ -60,8 +64,10 @@ class ARQRED:
             # Cerrar el socket
             sock.close()
 
+
     def is_json_string(self, txt):
         return txt.startswith("{")
+
 
     def obtener_leaderboard(self):
         self.sock.send("GET_LEADERBOARD\r\n".encode())
@@ -79,12 +85,14 @@ class ARQRED:
                     fin = True
         return data
 
+
     def enviar_salto(self, grupo, altura, fecha):
         datos = 'SEND_DATA {"nombre":"' + self.username + '", "grupo_ProMu":"' + grupo + '", "altura": ' + str(altura) + ',"fecha":"' + str(fecha) + '"}\r\n'
         print(datos)
         self.sock.send(datos.encode())
         print(self.sock.recv(1024).decode())
         print(fecha)
+
 
     def formato_fecha(self):
         fecha = str(datetime.datetime.now().date())
@@ -115,6 +123,8 @@ class ARQRED:
             fecha[1] = "diciembre"
         fecha = str(fecha[2]+ "-" +fecha[1]+ "-" +fecha[0])
         return fecha
+
+
 class GUI:
     def __init__(self):
         self.root = gz.App(title="APP")
@@ -124,15 +134,52 @@ class GUI:
         self.inicio_sesion_container = None
         self.principal_container = None
         self.leaderboard_container = None
+        self.menu = None
         self.crear_ventana_principal()
 
-    def barra_menu(self):
-        menu_items = [
-            ["Leaderboard", self.ver_leaderboard],
-            ["Enviar datos", self.enviar_informacion]
-        ]
 
-        menubar = gz.MenuBar(self.root, toplevel=["Window"], options=menu_items)
+    def barra_menu(self):
+        def file_function():
+            print("File function")
+
+        def edit_function():
+            print("Edit function")
+
+        def iniciar_sesion():
+            self.ventana_iniciar_sesion()
+
+        def cerrar_sesion():
+            self.arqred.cerrar_sesion()
+            self.actualizar_ventana_principal(False)
+
+        if self.logeado:
+            self.menu = gz.MenuBar(self.root,
+                                   toplevel=["Archivo", "Editar", "Ventana", "Herramientas", "Historial", "Ayuda",
+                                             "Acerca de", "Salir"],
+                                   options=[
+                                       [["File option 1", file_function], ["File option 2", file_function]],
+                                       [["Edit option 1", edit_function], ["Edit option 2", edit_function]],
+                                       [["Edit option 1", edit_function]],
+                                       [["File option 1", file_function], ["File option 2", file_function]],
+                                       [["Edit option 1", edit_function], ["Edit option 2", edit_function]],
+                                       [["Edit option 1", edit_function]],
+                                       [["File option 1", file_function], ["File option 2", file_function]],
+                                       [["Cerrar sesión", cerrar_sesion]]
+                                   ])
+        else:
+            self.menu = gz.MenuBar(self.root,
+                                   toplevel=["Acceder"],
+                                   options=[
+                                       [["Iniciar sesión", iniciar_sesion]],
+                                   ])
+
+
+    def actualizar_barra_menu(self):
+        # Destruye la barra de menú actual y vuelve a crearla para reflejar el estado de inicio de sesión actual
+        if self.menu:
+            self.menu.tk.destroy()
+        self.barra_menu()
+
 
     def crear_ventana_principal(self):
         # Contenedor principal
@@ -155,10 +202,15 @@ class GUI:
         # Contenedor para leaderboard
         self.leaderboard_container = gz.Box(self.principal_container)
 
+        # Crear la barra de menú inicial
+        self.barra_menu()
+
+
     def acceder_como_invitado(self):
         # Lógica para acceder como invitado
         print("Accediendo como invitado")
         self.actualizar_ventana_principal(False)  # Mostrar ventana principal como invitado
+
 
     def ventana_iniciar_sesion(self):
         # Limpiar contenedor de bienvenida y mostrar contenedor de inicio de sesión
@@ -176,13 +228,16 @@ class GUI:
         password.tk.pack(pady=5)
 
         # Boton para entrar en la app
-        boton_iniciar_sesion = gz.PushButton(self.inicio_sesion_container, text="Iniciar sesión", command=lambda: self.arqred.iniciar_sesion(usuario.value, password.value, self))
+        boton_iniciar_sesion = gz.PushButton(self.inicio_sesion_container, text="Iniciar sesión",
+                                             command=lambda: self.arqred.iniciar_sesion(usuario.value, password.value,
+                                                                                        self))
         boton_iniciar_sesion.tk.pack(pady=5)
+
 
     def actualizar_ventana_principal(self, loged=False):
         self.logeado = loged  # Actualizar el estado de inicio de sesión
         self.principal_container.show()
-        # self.barra_menu()
+        self.actualizar_barra_menu()
 
         if loged:
             # Mostrar opciones para usuario logeado
@@ -190,16 +245,18 @@ class GUI:
             self.inicio_sesion_container.hide()
 
             label = gz.Text(self.principal_container, text="¡Bienvenido!")
-            boton_leaderboard = gz.PushButton(self.principal_container, text="Ver Leaderboard", command=self.ver_leaderboard)
+            boton_leaderboard = gz.PushButton(self.principal_container, text="Ver Leaderboard",
+                                              command=self.ver_leaderboard)
             boton_leaderboard.tk.pack(pady=5)
             boton_enviar = gz.PushButton(self.principal_container, text="Enviar datos",
-                                              command=self.enviar_informacion)
+                                         command=self.enviar_informacion)
             boton_enviar.tk.pack(pady=5)
         else:
             # Mostrar opciones para usuario invitado
             self.bienvenida_container.show()
             label = gz.Text(self.principal_container, text="¡Bienvenido, invitado!")
         label.tk.pack()
+
 
     def ver_leaderboard(self):
         if self.logeado:
@@ -212,6 +269,7 @@ class GUI:
                 print(type(entry))
         else:
             print("Debe iniciar sesión para ver la leaderboard.")
+
 
     def enviar_informacion(self):
         def enviar_datos_aux(grupo_promu, altura, formato_fecha):
