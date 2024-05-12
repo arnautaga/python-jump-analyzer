@@ -76,8 +76,7 @@ class ARQRED:
         return data
 
     def enviar_salto(self, grupo, altura, fecha):
-        datos = 'SEND_DATA{"nombre":' + "'" + self.username + "'" + ', "grupo_ProMu":' + grupo + ', "altura": ' + str(altura) + ',"fecha":' + "'" + str(fecha) + "'}\r\n"
-        2
+        datos = 'SEND_DATA {"nombre":"' + self.username + '", "grupo_ProMu":"' + grupo + '", "altura": ' + str(altura) + ',"fecha":"' + str(fecha) + '"}\r\n'
         print(datos)
         self.sock.send(datos.encode())
         print(self.sock.recv(1024).decode())
@@ -203,7 +202,7 @@ class GUI:
 
     def enviar_informacion(self):
         def enviar_datos_aux(grupo_promu, altura, formato_fecha):
-            grupo_promu = str(grupo_promu)[27:]
+            grupo_promu = str(grupo_promu)[28:-1]
             altura = str(altura)[28:-1]
             self.arqred.enviar_salto(grupo_promu, int(altura), formato_fecha)
 
