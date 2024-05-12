@@ -122,6 +122,14 @@ class GUI:
         self.leaderboard_container = None
         self.crear_ventana_principal()
 
+    def barra_menu(self):
+        menu_items = [
+            ["Leaderboard", self.ver_leaderboard],
+            ["Enviar datos", self.enviar_informacion]
+        ]
+
+        menubar = gz.MenuBar(self.root, toplevel=["Window"], options=menu_items)
+
     def crear_ventana_principal(self):
         # Contenedor principal
         self.principal_container = gz.Box(self.root)
@@ -170,6 +178,7 @@ class GUI:
     def actualizar_ventana_principal(self, loged=False):
         self.logeado = loged  # Actualizar el estado de inicio de sesión
         self.principal_container.show()
+        # self.barra_menu()
 
         if loged:
             # Mostrar opciones para usuario logeado
