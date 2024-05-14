@@ -220,7 +220,7 @@ class GUI:
         # Añadir los labels y textboxes para introducir los datos
         label_login = gz.Text(self.inicio_sesion_container, text="Nombre de usuario:")
         label_login.tk.pack(pady=5)
-        usuario = gz.TextBox(self.inicio_sesion_container)
+        usuario = gz.TextBox(self.inicio_sesion_container, hide_text=True)
         usuario.tk.pack(pady=5)
         label_password = gz.Text(self.inicio_sesion_container, text="Contraseña:")
         label_password.tk.pack(pady=5)
