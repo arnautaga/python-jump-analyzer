@@ -31,11 +31,14 @@ class ARQRED:
                             self.username = username
                             gui.actualizar_ventana_principal(True)
                         else:
-                            print("Error: ", data)
+                            gui.inicio_sesion_container.remove()
+                            gui.ventana_iniciar_sesion(False)
                     else:
-                        print("Error: ", data)
+                        gui.inicio_sesion_container.remove()
+                        gui.ventana_iniciar_sesion(False)
                 else:
-                    print("Error: ", data)
+                    gui.inicio_sesion_container.remove()
+                    gui.ventana_iniciar_sesion(False)
             except Exception as e:
                 print("Error al conectar al servidor:", e)
         else:
@@ -212,7 +215,7 @@ class GUI:
         self.actualizar_ventana_principal(False)  # Mostrar ventana principal como invitado
 
 
-    def ventana_iniciar_sesion(self):
+    def ventana_iniciar_sesion(self, bool=True):
         # Limpiar contenedor de bienvenida y mostrar contenedor de inicio de sesión
         self.bienvenida_container.hide()
         self.inicio_sesion_container.show()
@@ -232,6 +235,9 @@ class GUI:
                                              command=lambda: self.arqred.iniciar_sesion(usuario.value, password.value,
                                                                                         self))
         boton_iniciar_sesion.tk.pack(pady=5)
+
+        if bool == False:
+            gz.warn("Errno 5", "No se ha podido iniciar sesión.\nCompruebe su nombre de usuario y contraseña")
 
 
     def actualizar_ventana_principal(self, loged=False):
@@ -288,7 +294,33 @@ class GUI:
             gz.PushButton(ventana_send_data, text="Enviar datos",
                           command=lambda: enviar_datos_aux(grupo_promu, altura, self.arqred.formato_fecha()))
 
-
+class Estadistica:
+    def __init__(self):
+        self.porcentiles()
+    def porcentiles(self, sexo, altura_salto):
+        if sexo == "M":
+            if altura_salto <= 24.52:
+                return (5, 0, 24.52, 24.52 - altura_salto)
+            elif altura_salto <= 26.78 and altura_salto > 24.52:
+                return (5, 24.52, 26.78, 26.78 - altura_salto)
+            elif altura_salto <= 29.96 and altura_salto > 26.78:
+                return (25, 26.78, 29.96, 29.96 - altura_salto)
+            elif altura_salto <= 33.24 and altura_salto > 29.96:
+                return (50, 29.96, 33.24, 33.24 - altura_salto)
+            elif altura_salto <= 36.90 and altura_salto > 33.24:
+                return (75, 33.24, 36.90, 36.90 - altura_salto)
+            elif altura_salto <= 41.19 and altura_salto > 36.9:
+                return (90, 41.19, 36.9, 41.19 - altura_salto)
+            elif altura_salto <=43.49 and altura_salto > 41.19:
+                return (95, 43.49, 41.19, 43.49 - altura_salto)
+            elif altura_salto <= 65 and altura_salto > 43.49:
+                return 100
+            else:
+                raise Exception("Errno6. Altura invalida, revise unidades. Unidad esperada cm")
+        elif sexo == "F":
+            if altura_salto
+        else:
+            raise ValueError("Errno7. Sexo debe ser M para masculino o F para femenino")
 if __name__ == "__main__":
     gui = GUI()
     gui.root.display()
