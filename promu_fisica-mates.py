@@ -42,7 +42,7 @@ import pandas as pd
 import numpy as np
 from scipy.ndimage import gaussian_filter1d as gf
 import matplotlib.pyplot as plt
-from scipy.integrate import cumtrapz
+from scipy.integrate import cumulative_trapezoid
 
 # Leer el archivo Excel
 fichero = "muestras-sep-coma.xlsx"
@@ -184,7 +184,7 @@ plt.show()
 # --------ESTOS SON CODIGOS PARA CALCULAR LA VELOCIDAD--------
 
 def primitivaNumerica(variable,tiempo,y0):
-    return cumtrapz(variable,x=tiempo,initial=y0)
+    return cumulative_trapezoid(variable,x=tiempo,initial=y0)
 
 #se usa aceleracion quitada la gravedad, no estoy segura de si es cortada o no cortada
 
