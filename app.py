@@ -2,6 +2,11 @@ import guizero as gz
 import socket
 import json
 import datetime
+import pandas as pd
+import numpy as np
+from scipy.ndimage import gaussian_filter1d as gf
+import matplotlib.pyplot as plt
+from scipy.integrate import cumulative_trapezoid
 
 
 class ARQRED:
@@ -338,6 +343,11 @@ class Estadistica:
                 raise Exception("Errno6. Altura invalida, revise unidades. Unidad esperada cm")
         else:
             raise ValueError("Errno7. Sexo debe ser M para masculino o F para femenino")
+
+class Analisis:
+    def __init__(self):
+        self.gui = GUI()
+        self.fichero = pd.read_excel(self.gui.fichero())
 
 
 if __name__ == "__main__":
