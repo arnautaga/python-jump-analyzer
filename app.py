@@ -129,7 +129,7 @@ class ARQRED:
             fecha[1] = "noviembre"
         elif fecha[1] == "12":
             fecha[1] = "diciembre"
-        fecha = str(fecha[2]+ "-" +fecha[1]+ "-" +fecha[0])
+        fecha = str(fecha[2] + "-" + fecha[1] + "-" + fecha[0])
         return fecha
 
 
@@ -236,120 +236,132 @@ class GUI:
         password.tk.pack(pady=5)
 
         # Boton para entrar en la app
-        boton_iniciar_sesion = gz.PushButton(self.inicio_sesion_container, text="Iniciar sesión",
-                                             command=lambda: self.arqred.iniciar_sesion(usuario.value, password.value,
-                                                                                        self))
-        boton_iniciar_sesion.tk.pack(pady=5)
-
+        boton_iniciar = gz.PushButton(self.inicio_sesion_container, text="Iniciar sesión",
+                                      command=lambda: self.arqred.iniciar_sesion(usuario.value, password.value, self))
+        boton_iniciar.tk.pack(pady=5)
         if bool == False:
-            gz.warn("Errno 5", "No se ha podido iniciar sesión.\nCompruebe su nombre de usuario y contraseña")
+            texto_error = gz.Text(self.inicio_sesion_container,
+                                  text="Usuario o contraseña incorrectos. Por favor, inténtelo de nuevo.")
+            texto_error.tk.pack(pady=5)
+        print("Inicio de sesión")
 
 
-    def actualizar_ventana_principal(self, loged=False):
-        self.logeado = loged  # Actualizar el estado de inicio de sesión
-        self.principal_container.show()
-        self.actualizar_barra_menu()
+    def actualizar_ventana_principal(self, logeado):
+        self.logeado = logeado  # Actualizar el estado de inicio de sesión
+        self.actualizar_barra_menu()  # Actualizar la barra de menú
 
-        if loged:
-            # Mostrar opciones para usuario logeado
+        # Limpiar el contenedor principal
+        self.principal_container.clear()
+
+        if logeado:
+            # Mostrar opciones para usuarios registrados
             self.bienvenida_container.hide()
-            self.inicio_sesion_container.hide()
-
-            label = gz.Text(self.principal_container, text="¡Bienvenido!")
-            boton_leaderboard = gz.PushButton(self.principal_container, text="Ver Leaderboard",
-                                              command=self.ver_leaderboard)
-            boton_leaderboard.tk.pack(pady=5)
-            boton_enviar = gz.PushButton(self.principal_container, text="Enviar datos",
-                                         command=self.enviar_informacion)
-            boton_enviar.tk.pack(pady=5)
+            self.leaderboard_container.show()
+            leaderboard_data = self.arqred.obtener_leaderboard()
+            leaderboard_text = gz.Text(self.leaderboard_container, text="Leaderboard")
+            leaderboard_text.tk.pack(pady=5)
+            leaderboard_info = "\n".join(
+                [f"Usuario: {entry['nombre']}, Grupo: {entry['grupo_ProMu']}, Altura: {entry['altura']}, Fecha: {entry['fecha']}" for entry in leaderboard_data])
+            leaderboard_label = gz.Text(self.leaderboard_container, text=leaderboard_info)
+            leaderboard_label.tk.pack(pady=5)
         else:
-            # Mostrar opciones para usuario invitado
+            # Mostrar bienvenida para usuarios no registrados o invitados
             self.bienvenida_container.show()
-            label = gz.Text(self.principal_container, text="¡Bienvenido, invitado!")
-        label.tk.pack()
+            self.leaderboard_container.hide()
 
-
-    def ver_leaderboard(self):
-        if self.logeado:
-            leaderboard = self.arqred.obtener_leaderboard()
-            print(leaderboard)
-            # Mostrar leaderboard en una nueva ventana
-            ventana_leaderboard = gz.Window(self.root, title="Leaderboard")
-            for entry in leaderboard:
-                gz.Text(ventana_leaderboard, text=entry).tk.pack()
-                print(type(entry))
-        else:
-            print("Debe iniciar sesión para ver la leaderboard.")
-
-
-    def enviar_informacion(self):
-        def enviar_datos_aux(grupo_promu, altura, formato_fecha):
-            grupo_promu = str(grupo_promu)[28:-1]
-            altura = str(altura)[28:-1]
-            self.arqred.enviar_salto(grupo_promu, int(altura), formato_fecha)
-
-        if self.logeado:
-            ventana_send_data = gz.Window(self.root, title="Enviar informacion")
-            gz.Text(ventana_send_data, text="Grupo de ProMu:").tk.pack()
-            grupo_promu = gz.TextBox(ventana_send_data)
-
-            gz.Text(ventana_send_data, text="Altura:").tk.pack()
-            altura = gz.TextBox(ventana_send_data)
-
-            gz.PushButton(ventana_send_data, text="Enviar datos",
-                          command=lambda: enviar_datos_aux(grupo_promu, altura, self.arqred.formato_fecha()))
-
-class Estadistica:
-    def __init__(self):
-        self.porcentiles()
-    def porcentiles(self, sexo, altura_salto):
-        if sexo == "M":
-            if altura_salto <= 24.52:
-                return (5, 0, 24.52, 24.52 - altura_salto)
-            elif altura_salto <= 26.78 and altura_salto > 24.52:
-                return (5, 24.52, 26.78, 26.78 - altura_salto)
-            elif altura_salto <= 29.96 and altura_salto > 26.78:
-                return (25, 26.78, 29.96, 29.96 - altura_salto)
-            elif altura_salto <= 33.24 and altura_salto > 29.96:
-                return (50, 29.96, 33.24, 33.24 - altura_salto)
-            elif altura_salto <= 36.90 and altura_salto > 33.24:
-                return (75, 33.24, 36.90, 36.90 - altura_salto)
-            elif altura_salto <= 41.19 and altura_salto > 36.9:
-                return (90, 41.19, 36.9, 41.19 - altura_salto)
-            elif altura_salto <=43.49 and altura_salto > 41.19:
-                return (95, 43.49, 41.19, 43.49 - altura_salto)
-            elif altura_salto <= 70 and altura_salto > 43.49:
-                return 100
-            else:
-                raise Exception("Errno6. Altura invalida, revise unidades. Unidad esperada cm")
-        elif sexo == "F":
-            if altura_salto <= 18:
-                return (5, 0, 18, 18 - altura_salto)
-            elif altura_salto <= 20.11 and altura_salto > 18:
-                return (5, 18, 20.11, 20.11 - altura_salto)
-            elif altura_salto <= 21.79 and altura_salto > 20.11:
-                return (25, 20.11, 21.79, 21.79 - altura_salto)
-            elif altura_salto <= 24.62 and altura_salto > 21.79:
-                return (50, 21.79, 24.62, 24.62 - altura_salto)
-            elif altura_salto <= 26.89 and altura_salto > 24.62:
-                return (75, 24.62, 26.89, 26.89 - altura_salto)
-            elif altura_salto <= 30.35 and altura_salto > 26.89:
-                return (90, 30.35, 26.89, 30.35 - altura_salto)
-            elif altura_salto <= 32.78 and altura_salto > 30.35:
-                return (95, 32.78, 30.35, 32.78 - altura_salto)
-            elif altura_salto <= 65 and altura_salto > 32.78:
-                return 100
-            else:
-                raise Exception("Errno6. Altura invalida, revise unidades. Unidad esperada cm")
-        else:
-            raise ValueError("Errno7. Sexo debe ser M para masculino o F para femenino")
 
 class Analisis:
     def __init__(self):
-        self.gui = GUI()
-        self.fichero = pd.read_excel(self.gui.fichero())
+        self.data = pd.read_csv(gui.acel_file())
+        self.tiempos = self.data["Tiempo (s)"].values
+        self.aceleracion_x = self.data["Aceleracion X (m/s^2)"].values
+        self.aceleracion_y = self.data["Aceleracion Y (m/s^2)"].values
+        self.aceleracion_z = self.data["Aceleracion Z (m/s^2)"].values
+        self.g = np.mean(a_v[indice_inicio:indice_fin])
+
+    def filtrar_datos(self):
+        # Aplicar filtro gaussiano para suavizar los datos
+        self.aceleracion_x = gf(self.aceleracion_x, sigma=2)
+        self.aceleracion_y = gf(self.aceleracion_y, sigma=2)
+        self.aceleracion_z = gf(self.aceleracion_z, sigma=2)
+
+    def calcular_fuerza(self):
+        # Calcular la fuerza resultante en cada eje
+        masa = 70  # kg (suposición)
+        self.fuerza_x = masa * self.aceleracion_x
+        self.fuerza_y = masa * self.aceleracion_y
+        self.fuerza_z = masa * (self.aceleracion_z - self.g)
+
+    def calcular_velocidad(self):
+        # Calcular la velocidad integrando la aceleración
+        self.velocidad_x = cumulative_trapezoid(self.aceleracion_x, self.tiempos, initial=0)
+        self.velocidad_y = cumulative_trapezoid(self.aceleracion_y, self.tiempos, initial=0)
+        self.velocidad_z = cumulative_trapezoid(self.aceleracion_z, self.tiempos, initial=0)
+
+    def calcular_desplazamiento(self):
+        # Calcular el desplazamiento integrando la velocidad
+        self.desplazamiento_x = cumulative_trapezoid(self.velocidad_x, self.tiempos, initial=0)
+        self.desplazamiento_y = cumulative_trapezoid(self.velocidad_y, self.tiempos, initial=0)
+        self.desplazamiento_z = cumulative_trapezoid(self.velocidad_z, self.tiempos, initial=0)
+
+    def calcular_potencia(self):
+        # Calcular la potencia como el producto punto de fuerza y velocidad
+        self.potencia_x = self.fuerza_x * self.velocidad_x
+        self.potencia_y = self.fuerza_y * self.velocidad_y
+        self.potencia_z = self.fuerza_z * self.velocidad_z
+        self.potencia_total = self.potencia_x + self.potencia_y + self.potencia_z
+
+    def graficar_datos(self):
+        # Crear las gráficas de los datos calculados
+        fig, axs = plt.subplots(5, 1, figsize=(10, 20), sharex=True)
+
+        axs[0].plot(self.tiempos, self.aceleracion_x, label='Aceleración X')
+        axs[0].plot(self.tiempos, self.aceleracion_y, label='Aceleración Y')
+        axs[0].plot(self.tiempos, self.aceleracion_z, label='Aceleración Z')
+        axs[0].set_ylabel('Aceleración (m/s^2)')
+        axs[0].legend()
+        axs[0].grid()
+
+        axs[1].plot(self.tiempos, self.fuerza_x, label='Fuerza X')
+        axs[1].plot(self.tiempos, self.fuerza_y, label='Fuerza Y')
+        axs[1].plot(self.tiempos, self.fuerza_z, label='Fuerza Z')
+        axs[1].set_ylabel('Fuerza (N)')
+        axs[1].legend()
+        axs[1].grid()
+
+        axs[2].plot(self.tiempos, self.velocidad_x, label='Velocidad X')
+        axs[2].plot(self.tiempos, self.velocidad_y, label='Velocidad Y')
+        axs[2].plot(self.tiempos, self.velocidad_z, label='Velocidad Z')
+        axs[2].set_ylabel('Velocidad (m/s)')
+        axs[2].legend()
+        axs[2].grid()
+
+        axs[3].plot(self.tiempos, self.desplazamiento_x, label='Desplazamiento X')
+        axs[3].plot(self.tiempos, self.desplazamiento_y, label='Desplazamiento Y')
+        axs[3].plot(self.tiempos, self.desplazamiento_z, label='Desplazamiento Z')
+        axs[3].set_ylabel('Desplazamiento (m)')
+        axs[3].legend()
+        axs[3].grid()
+
+        axs[4].plot(self.tiempos, self.potencia_x, label='Potencia X')
+        axs[4].plot(self.tiempos, self.potencia_y, label='Potencia Y')
+        axs[4].plot(self.tiempos, self.potencia_z, label='Potencia Z')
+        axs[4].plot(self.tiempos, self.potencia_total, label='Potencia Total')
+        axs[4].set_ylabel('Potencia (W)')
+        axs[4].set_xlabel('Tiempo (s)')
+        axs[4].legend()
+        axs[4].grid()
+
+        plt.show()
 
 
 if __name__ == "__main__":
     gui = GUI()
+    analisis = Analisis()
+    analisis.filtrar_datos()
+    analisis.calcular_fuerza()
+    analisis.calcular_velocidad()
+    analisis.calcular_desplazamiento()
+    analisis.calcular_potencia()
+    analisis.graficar_datos()
     gui.root.display()
