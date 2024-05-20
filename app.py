@@ -271,8 +271,8 @@ class GUI:
 
 
 class Analisis:
-    def __init__(self, filename="salto_triple.csv"):
-        self.data = pd.read_csv(filename)
+    def __init__(self, filename="muestras-sep-coma.xlsx"):
+        self.data = pd.read_excel(filename)
         self.tiempos = self.data["Tiempo (s)"].values
         self.aceleracion_x = self.data["Aceleracion X (m/s^2)"].values
         self.aceleracion_y = self.data["Aceleracion Y (m/s^2)"].values
