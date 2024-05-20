@@ -273,10 +273,10 @@ class GUI:
 class Analisis:
     def __init__(self, filename="muestras-sep-coma.xlsx"):
         self.data = pd.read_excel(filename)
-        self.tiempos = self.data["Tiempo (s)"].values
-        self.aceleracion_x = self.data["Aceleracion X (m/s^2)"].values
-        self.aceleracion_y = self.data["Aceleracion Y (m/s^2)"].values
-        self.aceleracion_z = self.data["Aceleracion Z (m/s^2)"].values
+        self.tiempos = self.data["t"].values
+        self.aceleracion_x = self.data["ax"].values
+        self.aceleracion_y = self.data["ay"].values
+        self.aceleracion_z = self.data["az"].values
         self.g = None  # Aceleración gravitatoria inicializada como None
 
     def calcular_aceleracion_gravitatoria(self):
