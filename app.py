@@ -271,13 +271,23 @@ class GUI:
 
 
 class Analisis:
-    def __init__(self):
-        self.data = pd.read_csv(gui.acel_file())
+    def __init__(self, filename="salto_triple.csv"):
+        self.data = pd.read_csv(filename)
         self.tiempos = self.data["Tiempo (s)"].values
         self.aceleracion_x = self.data["Aceleracion X (m/s^2)"].values
         self.aceleracion_y = self.data["Aceleracion Y (m/s^2)"].values
         self.aceleracion_z = self.data["Aceleracion Z (m/s^2)"].values
-        self.g = np.mean(a_v[indice_inicio:indice_fin])
+        self.g = None  # Aceleración gravitatoria inicializada como None
+
+    def calcular_aceleracion_gravitatoria(self):
+        # Suponiendo que los primeros y últimos 10 puntos son los de reposo
+        puntos_reposo = np.concatenate([self.aceleracion_z[:10], self.aceleracion_z[-10:]])
+        self.g = np.mean(puntos_reposo)
+        print(f"Aceleración gravitatoria calculada: {self.g} m/s^2")
+
+    def ajustar_aceleracion(self):
+        # Restar la aceleración gravitatoria de la componente Z
+        self.aceleracion_z -= self.g
 
     def filtrar_datos(self):
         # Aplicar filtro gaussiano para suavizar los datos
@@ -290,7 +300,7 @@ class Analisis:
         masa = 70  # kg (suposición)
         self.fuerza_x = masa * self.aceleracion_x
         self.fuerza_y = masa * self.aceleracion_y
-        self.fuerza_z = masa * (self.aceleracion_z - self.g)
+        self.fuerza_z = masa * self.aceleracion_z
 
     def calcular_velocidad(self):
         # Calcular la velocidad integrando la aceleración
@@ -356,12 +366,12 @@ class Analisis:
 
 
 if __name__ == "__main__":
-    gui = GUI()
     analisis = Analisis()
+    analisis.calcular_aceleracion_gravitatoria()  # Calcular la aceleración gravitatoria
+    analisis.ajustar_aceleracion()  # Ajustar la aceleración Z
     analisis.filtrar_datos()
     analisis.calcular_fuerza()
     analisis.calcular_velocidad()
     analisis.calcular_desplazamiento()
     analisis.calcular_potencia()
     analisis.graficar_datos()
-    gui.root.display()
