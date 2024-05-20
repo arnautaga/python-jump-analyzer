@@ -375,3 +375,6 @@ if __name__ == "__main__":
     analisis.calcular_desplazamiento()
     analisis.calcular_potencia()
     analisis.graficar_datos()
+    ARQRED()
+    gui = GUI()
+    gui.root.display()
