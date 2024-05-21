@@ -156,7 +156,11 @@ class GUI:
 
         def cerrar_sesion():
             self.arqred.cerrar_sesion()
-            self.actualizar_ventana_principal(False)
+            self.crear_ventana_principal()
+
+
+        def home():
+            self.crear_ventana_principal()
 
         menubar = tk.Menu(self.root)
         if self.logeado:
@@ -173,6 +177,7 @@ class GUI:
             menubar.add_command(label="Cerrar sesión", command=cerrar_sesion)
         else:
             menubar.add_command(label="Iniciar sesión", command=iniciar_sesion)
+            menubar.add_command(label="Home", command=home)
 
         self.root.config(menu=menubar)
 
