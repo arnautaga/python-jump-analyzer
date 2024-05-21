@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7e9647cb-9191-40ce-9bda-7f79011f1837" name="Changes" comment="GUI funcionando. Cambio de libreria a tkinter&#10;Revisar la parte de analisis con el archivo original promu_fisica-mates.py">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-    </list>
+    <list default="true" id="7e9647cb-9191-40ce-9bda-7f79011f1837" name="Changes" comment="GUI funcionando. Cambio de libreria a tkinter&#10;Revisar la parte de analisis con el archivo original promu_fisica-mates.py" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -97,7 +94,7 @@
       <workItem from="1716151931895" duration="293000" />
       <workItem from="1716152274930" duration="113000" />
       <workItem from="1716152397801" duration="3854000" />
-      <workItem from="1716222470644" duration="5370000" />
+      <workItem from="1716222470644" duration="5398000" />
     </task>
     <task id="LOCAL-00001" summary="add">
       <option name="closed" value="true" />
@@ -235,7 +232,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716291914746</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="GUI funcionando. Cambio de libreria a tkinter&#10;Revisar la parte de analisis con el archivo original promu_fisica-mates.py">
+      <option name="closed" value="true" />
+      <created>1716292897613</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1716292897613</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

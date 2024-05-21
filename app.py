@@ -37,13 +37,10 @@ class ARQRED:
                             self.username = username
                             gui.actualizar_ventana_principal(True)
                         else:
-                            gui.inicio_sesion_container.remove()
                             gui.ventana_iniciar_sesion(False)
                     else:
-                        gui.inicio_sesion_container.remove()
                         gui.ventana_iniciar_sesion(False)
                 else:
-                    gui.inicio_sesion_container.remove()
                     gui.ventana_iniciar_sesion(False)
             except Exception as e:
                 print("Error al conectar al servidor:", e)
@@ -397,8 +394,8 @@ class Analisis:
 
 class Estadistica:
     def __init__(self):
-        self.porcentiles()
-    def porcentiles(self, sexo, altura_salto):
+        self.aux = None
+    def porcentiles_altura(self, sexo, altura_salto):
         if sexo == "M":
             if altura_salto <= 24.52:
                 return (5, 0, 24.52, 24.52 - altura_salto)
@@ -442,6 +439,7 @@ class Estadistica:
 
 
 if __name__ == "__main__":
+    '''
     analisis = Analisis()
     analisis.calcular_aceleracion_gravitatoria()  # Calcular la aceleración gravitatoria
     analisis.ajustar_aceleracion()  # Ajustar la aceleración Z
@@ -451,5 +449,8 @@ if __name__ == "__main__":
     analisis.calcular_desplazamiento()
     analisis.calcular_potencia()
     analisis.graficar_datos()
+    '''
     ARQRED()
+    estadistica = Estadistica()
+    estadistica.porcentiles_altura("M", 28)
     gui = GUI()
