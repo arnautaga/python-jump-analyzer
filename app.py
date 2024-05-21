@@ -1,4 +1,5 @@
-import guizero as gz
+import tkinter as tk
+from tkinter import filedialog
 import socket
 import json
 import datetime
@@ -135,23 +136,20 @@ class ARQRED:
 
 class GUI:
     def __init__(self):
-        self.root = gz.App(title="APP")
+        self.root = tk.Tk()
+        self.root.title("APP")
+        self.root.geometry("500x500")
         self.arqred = ARQRED()
-        self.logeado = False  # Estado de inicio de sesión
-        self.bienvenida_container = None
-        self.inicio_sesion_container = None
-        self.principal_container = None
-        self.leaderboard_container = None
-        self.menu = None
+        self.logeado = False
         self.crear_ventana_principal()
-
+        self.root.mainloop()
 
     def barra_menu(self):
         def file_function():
-            print("File function")
+            tk.messagebox.showinfo("File", "File function")
 
         def edit_function():
-            print("Edit function")
+            tk.messagebox.showinfo("Edit", "Edit function")
 
         def iniciar_sesion():
             self.ventana_iniciar_sesion()
@@ -160,114 +158,124 @@ class GUI:
             self.arqred.cerrar_sesion()
             self.actualizar_ventana_principal(False)
 
+        menubar = tk.Menu(self.root)
         if self.logeado:
-            self.menu = gz.MenuBar(self.root,
-                                   toplevel=["Archivo", "Editar", "Ventana", "Herramientas", "Historial", "Ayuda",
-                                             "Acerca de", "Salir"],
-                                   options=[
-                                       [["File option 1", file_function], ["File option 2", file_function]],
-                                       [["Edit option 1", edit_function], ["Edit option 2", edit_function]],
-                                       [["Edit option 1", edit_function]],
-                                       [["File option 1", file_function], ["File option 2", file_function]],
-                                       [["Edit option 1", edit_function], ["Edit option 2", edit_function]],
-                                       [["Edit option 1", edit_function]],
-                                       [["File option 1", file_function], ["File option 2", file_function]],
-                                       [["Cerrar sesión", cerrar_sesion]]
-                                   ])
+            archivo_menu = tk.Menu(menubar, tearoff=0)
+            archivo_menu.add_command(label="File option 1", command=file_function)
+            archivo_menu.add_command(label="File option 2", command=file_function)
+            menubar.add_cascade(label="Archivo", menu=archivo_menu)
+
+            editar_menu = tk.Menu(menubar, tearoff=0)
+            editar_menu.add_command(label="Edit option 1", command=edit_function)
+            editar_menu.add_command(label="Edit option 2", command=edit_function)
+            menubar.add_cascade(label="Editar", menu=editar_menu)
+
+            menubar.add_command(label="Cerrar sesión", command=cerrar_sesion)
         else:
-            self.menu = gz.MenuBar(self.root,
-                                   toplevel=["Acceder"],
-                                   options=[
-                                       [["Iniciar sesión", iniciar_sesion]],
-                                   ])
+            menubar.add_command(label="Iniciar sesión", command=iniciar_sesion)
 
-
-    def actualizar_barra_menu(self):
-        # Destruye la barra de menú actual y vuelve a crearla para reflejar el estado de inicio de sesión actual
-        if self.menu:
-            self.menu.tk.destroy()
-        self.barra_menu()
-
+        self.root.config(menu=menubar)
 
     def crear_ventana_principal(self):
-        # Contenedor principal
-        self.principal_container = gz.Box(self.root)
-
-        # Contenedor para la bienvenida
-        self.bienvenida_container = gz.Box(self.principal_container)
-        imagen_bienvenida = gz.Picture(self.bienvenida_container, image="imagen_bienvenida.png")
-        imagen_bienvenida.tk.pack()
-        boton_invitado = gz.PushButton(self.bienvenida_container, text="Acceder como invitado",
-                                       command=self.acceder_como_invitado)
-        boton_invitado.tk.pack(pady=5)
-        boton_iniciar_sesion = gz.PushButton(self.bienvenida_container, text="Acceder como usuario registrado",
-                                             command=self.ventana_iniciar_sesion)
-        boton_iniciar_sesion.tk.pack(pady=5)
-
-        # Contenedor para el inicio de sesión
-        self.inicio_sesion_container = gz.Box(self.principal_container)
-
-        # Contenedor para leaderboard
-        self.leaderboard_container = gz.Box(self.principal_container)
-
-        # Crear la barra de menú inicial
+        self.limpiar_ventana()
         self.barra_menu()
 
+        self.bienvenida_frame = tk.Frame(self.root)
+        self.bienvenida_frame.pack()
+
+        imagen_bienvenida = tk.PhotoImage(file="imagen_bienvenida.png")  # Asegúrate de tener esta imagen
+        label_imagen = tk.Label(self.bienvenida_frame, image=imagen_bienvenida)
+        label_imagen.image = imagen_bienvenida
+        label_imagen.pack()
+
+        boton_invitado = tk.Button(self.bienvenida_frame, text="Acceder como invitado", command=self.acceder_como_invitado)
+        boton_invitado.pack(pady=5)
+
+        boton_iniciar_sesion = tk.Button(self.bienvenida_frame, text="Acceder como usuario registrado", command=self.ventana_iniciar_sesion)
+        boton_iniciar_sesion.pack(pady=5)
+
+    def limpiar_ventana(self):
+        for widget in self.root.winfo_children():
+            widget.destroy()
 
     def acceder_como_invitado(self):
-        # Lógica para acceder como invitado
-        print("Accediendo como invitado")
-        self.actualizar_ventana_principal(False)  # Mostrar ventana principal como invitado
-
+        self.actualizar_ventana_principal(False)
 
     def ventana_iniciar_sesion(self, bool=True):
-        # Limpiar contenedor de bienvenida y mostrar contenedor de inicio de sesión
-        self.bienvenida_container.hide()
-        self.inicio_sesion_container.show()
+        self.limpiar_ventana()
+        self.barra_menu()
 
-        # Añadir los labels y textboxes para introducir los datos
-        label_login = gz.Text(self.inicio_sesion_container, text="Nombre de usuario:")
-        label_login.tk.pack(pady=5)
-        usuario = gz.TextBox(self.inicio_sesion_container, hide_text=True)
-        usuario.tk.pack(pady=5)
-        label_password = gz.Text(self.inicio_sesion_container, text="Contraseña:")
-        label_password.tk.pack(pady=5)
-        password = gz.TextBox(self.inicio_sesion_container, hide_text=True)
-        password.tk.pack(pady=5)
+        self.inicio_sesion_frame = tk.Frame(self.root)
+        self.inicio_sesion_frame.pack()
 
-        # Boton para entrar en la app
-        boton_iniciar = gz.PushButton(self.inicio_sesion_container, text="Iniciar sesión",
-                                      command=lambda: self.arqred.iniciar_sesion(usuario.value, password.value, self))
-        boton_iniciar.tk.pack(pady=5)
-        if bool == False:
-            texto_error = gz.Text(self.inicio_sesion_container,
-                                  text="Usuario o contraseña incorrectos. Por favor, inténtelo de nuevo.")
-            texto_error.tk.pack(pady=5)
-        print("Inicio de sesión")
+        label_login = tk.Label(self.inicio_sesion_frame, text="Nombre de usuario:")
+        label_login.pack(pady=5)
+        self.usuario_entry = tk.Entry(self.inicio_sesion_frame)
+        self.usuario_entry.pack(pady=5)
 
+        label_password = tk.Label(self.inicio_sesion_frame, text="Contraseña:")
+        label_password.pack(pady=5)
+        self.password_entry = tk.Entry(self.inicio_sesion_frame, show="*")
+        self.password_entry.pack(pady=5)
+
+        boton_iniciar = tk.Button(self.inicio_sesion_frame, text="Iniciar sesión", command=self.procesar_inicio_sesion)
+        boton_iniciar.pack(pady=5)
+
+        if not bool:
+            label_error = tk.Label(self.inicio_sesion_frame, text="Usuario o contraseña incorrectos. Por favor, inténtelo de nuevo.", fg="red")
+            label_error.pack(pady=5)
+
+    def procesar_inicio_sesion(self):
+        usuario = self.usuario_entry.get()
+        password = self.password_entry.get()
+        self.arqred.iniciar_sesion(usuario, password, self)
 
     def actualizar_ventana_principal(self, logeado):
-        self.logeado = logeado  # Actualizar el estado de inicio de sesión
-        self.actualizar_barra_menu()  # Actualizar la barra de menú
-
-        # Limpiar el contenedor principal
-        self.principal_container.clear()
+        self.logeado = logeado
+        self.limpiar_ventana()
+        self.barra_menu()
 
         if logeado:
-            # Mostrar opciones para usuarios registrados
-            self.bienvenida_container.hide()
-            self.leaderboard_container.show()
+            def open_file():
+                # Abre el selector de fichero y obtiene la ruta del fichero seleccionado
+                file_path = filedialog.askopenfilename(
+                    title="Seleccionar fichero",
+                    filetypes=(("Archivos de Excel", "*.xlsx"), ("Todos los archivos", "*.*"))
+                )
+            self.enviar_frame = tk.Frame(self.root)
+            self.enviar_frame.pack(side=tk.LEFT, padx=5, pady=5, fill=tk.BOTH, expand=True)
+
+            self.leaderboard_frame = tk.Frame(self.root)
+            self.leaderboard_frame.pack(side=tk.RIGHT, padx=5, pady=5, fill=tk.BOTH, expand=True)
+
+            # Sección de enviar y analizar
+            fichero_label = tk.Label(self.enviar_frame, text="Abrir fichero acelerometro")
+            fichero_label.pack(pady=5)
+            abrir_fichero = tk.Button(self.enviar_frame, text="Abrir fichero", command=open_file)
+            abrir_fichero.pack(pady=5)
+
+            analizar_label = tk.Label(self.enviar_frame, text="Analizar")
+            analizar_label.pack(pady=5)
+            analizar_button = tk.Button(self.enviar_frame, text="Analizar", command=lambda: print("Analizar"))
+            analizar_button.pack(pady=5)
+
+            enviar_label = tk.Label(self.enviar_frame, text="Enviar")
+            enviar_label.pack(pady=5)
+            enviar_button = tk.Button(self.enviar_frame, text="Enviar", command=lambda: print("Enviar"))
+            enviar_button.pack(pady=5)
+
+            # Sección de leaderboard
             leaderboard_data = self.arqred.obtener_leaderboard()
-            leaderboard_text = gz.Text(self.leaderboard_container, text="Leaderboard")
-            leaderboard_text.tk.pack(pady=5)
+            leaderboard_text = tk.Label(self.leaderboard_frame, text="Leaderboard")
+            leaderboard_text.pack(pady=5)
+
             leaderboard_info = "\n".join(
                 [f"Usuario: {entry['nombre']}, Grupo: {entry['grupo_ProMu']}, Altura: {entry['altura']}, Fecha: {entry['fecha']}" for entry in leaderboard_data])
-            leaderboard_label = gz.Text(self.leaderboard_container, text=leaderboard_info)
-            leaderboard_label.tk.pack(pady=5)
+            leaderboard_label = tk.Label(self.leaderboard_frame, text=leaderboard_info)
+            leaderboard_label.pack(pady=5)
         else:
-            # Mostrar bienvenida para usuarios no registrados o invitados
-            self.bienvenida_container.show()
-            self.leaderboard_container.hide()
+            self.crear_ventana_principal()
+
 
 
 class Analisis:
@@ -422,4 +430,3 @@ if __name__ == "__main__":
     analisis.graficar_datos()
     ARQRED()
     gui = GUI()
-    gui.root.display()
