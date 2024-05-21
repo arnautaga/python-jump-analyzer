@@ -138,7 +138,7 @@ class GUI:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("APP")
-        self.root.geometry("500x500")
+        self.root.geometry("750x600")
         self.arqred = ARQRED()
         self.logeado = False
         self.crear_ventana_principal()
@@ -235,13 +235,13 @@ class GUI:
         self.limpiar_ventana()
         self.barra_menu()
 
+        def open_file():
+            # Abre el selector de fichero y obtiene la ruta del fichero seleccionado
+            file_path = filedialog.askopenfilename(
+                title="Seleccionar fichero",
+                filetypes=(("Archivos de Excel", "*.xlsx"), ("Todos los archivos", "*.*"))
+            )
         if logeado:
-            def open_file():
-                # Abre el selector de fichero y obtiene la ruta del fichero seleccionado
-                file_path = filedialog.askopenfilename(
-                    title="Seleccionar fichero",
-                    filetypes=(("Archivos de Excel", "*.xlsx"), ("Todos los archivos", "*.*"))
-                )
             self.enviar_frame = tk.Frame(self.root)
             self.enviar_frame.pack(side=tk.LEFT, padx=5, pady=5, fill=tk.BOTH, expand=True)
 
@@ -274,7 +274,25 @@ class GUI:
             leaderboard_label = tk.Label(self.leaderboard_frame, text=leaderboard_info)
             leaderboard_label.pack(pady=5)
         else:
-            self.crear_ventana_principal()
+            self.enviar_frame = tk.Frame(self.root)
+            self.enviar_frame.pack(side=tk.LEFT, padx=5, pady=5, fill=tk.BOTH, expand=True)
+
+            self.leaderboard_frame = tk.Frame(self.root)
+            self.leaderboard_frame.pack(side=tk.RIGHT, padx=5, pady=5, fill=tk.BOTH, expand=True)
+
+            # Sección de enviar y analizar
+            fichero_label = tk.Label(self.enviar_frame, text="Abrir fichero acelerometro")
+            fichero_label.pack(pady=5)
+            abrir_fichero = tk.Button(self.enviar_frame, text="Abrir fichero", command=open_file)
+            abrir_fichero.pack(pady=5)
+
+            analizar_label = tk.Label(self.enviar_frame, text="Analizar")
+            analizar_label.pack(pady=5)
+            analizar_button = tk.Button(self.enviar_frame, text="Analizar", command=lambda: print("Analizar"))
+            analizar_button.pack(pady=5)
+
+            # Sección de leaderboard
+            tk.Label(self.leaderboard_frame, text="Leaderboard Not Available.\nPorfavor, inicie sesión").pack(pady=5)
 
 
 

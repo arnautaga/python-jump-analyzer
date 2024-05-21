@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7e9647cb-9191-40ce-9bda-7f79011f1837" name="Changes" comment="Implementación de la clase de estadistica para analizar los porcentiles...&#10;Revisar la parte de analisis con el archivo original promu_fisica-mates.py">
+    <list default="true" id="7e9647cb-9191-40ce-9bda-7f79011f1837" name="Changes" comment="GUI funcionando. Cambio de libreria a tkinter&#10;Revisar la parte de analisis con el archivo original promu_fisica-mates.py">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
     </list>
@@ -97,7 +97,7 @@
       <workItem from="1716151931895" duration="293000" />
       <workItem from="1716152274930" duration="113000" />
       <workItem from="1716152397801" duration="3854000" />
-      <workItem from="1716222470644" duration="3901000" />
+      <workItem from="1716222470644" duration="4606000" />
     </task>
     <task id="LOCAL-00001" summary="add">
       <option name="closed" value="true" />
@@ -219,7 +219,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716222566100</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="GUI funcionando. Cambio de libreria a tkinter&#10;Revisar la parte de analisis con el archivo original promu_fisica-mates.py">
+      <option name="closed" value="true" />
+      <created>1716291279447</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1716291279447</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -240,11 +248,12 @@
     <MESSAGE value="add" />
     <MESSAGE value="Revisar la parte de analisis con el archivo original promu_fisica-mates.py" />
     <MESSAGE value="Implementación de la clase de estadistica para analizar los porcentiles...&#10;Revisar la parte de analisis con el archivo original promu_fisica-mates.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implementación de la clase de estadistica para analizar los porcentiles...&#10;Revisar la parte de analisis con el archivo original promu_fisica-mates.py" />
+    <MESSAGE value="GUI funcionando. Cambio de libreria a tkinter&#10;Revisar la parte de analisis con el archivo original promu_fisica-mates.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="GUI funcionando. Cambio de libreria a tkinter&#10;Revisar la parte de analisis con el archivo original promu_fisica-mates.py" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/pythonProject$asistente.coverage" NAME="asistente Coverage Results" MODIFIED="1715684545985" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/pythonProject$app.coverage" NAME="app Coverage Results" MODIFIED="1716290945562" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/pythonProject$app.coverage" NAME="app Coverage Results" MODIFIED="1716291653106" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/pythonProject$promu_fisica_mates.coverage" NAME="promu_fisica-mates Coverage Results" MODIFIED="1716275625074" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
