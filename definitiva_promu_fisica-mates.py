@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from scipy.ndimage import gaussian_filter1d as gf
 import matplotlib.pyplot as plt
-from scipy.integrate import cumtrapz
+from scipy.integrate import cumulative_trapezoid as cumtrapz
 
 # Función para leer los datos desde el archivo Excel
 def leer_datos(fichero):
