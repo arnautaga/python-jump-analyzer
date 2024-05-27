@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7e9647cb-9191-40ce-9bda-7f79011f1837" name="Changes" comment="GUI funcionando. Cambio de libreria a tkinter&#10;Revisar la parte de analisis con el archivo original promu_fisica-mates.py" />
+    <list default="true" id="7e9647cb-9191-40ce-9bda-7f79011f1837" name="Changes" comment="GUI funcionando. Cambio de libreria a tkinter&#10;Revisar la parte de analisis con el archivo original promu_fisica-mates.py">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -45,8 +48,8 @@
     &quot;Python.prueba.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/arnau/OneDrive - UPV/GTDM/Primero/PROMU/pythonProject&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;iria&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Iria Lúa/Documents/GitHub/ProMu&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -60,6 +63,31 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\arnau\OneDrive - UPV\GTDM\Primero\PROMU\pythonProject" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="app" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="pythonProject" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -95,6 +123,8 @@
       <workItem from="1716152274930" duration="113000" />
       <workItem from="1716152397801" duration="3854000" />
       <workItem from="1716222470644" duration="5398000" />
+      <workItem from="1716803823790" duration="134000" />
+      <workItem from="1716804052710" duration="1154000" />
     </task>
     <task id="LOCAL-00001" summary="add">
       <option name="closed" value="true" />

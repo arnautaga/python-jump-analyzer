@@ -138,8 +138,8 @@ class GUI:
         self.root.geometry("750x600")
         self.arqred = ARQRED()
         self.logeado = False
-        self.crear_ventana_principal()
-        self.root.mainloop()
+        self.crear_ventana_principal() 
+        self.root.mainloop()  # execute app
 
     def barra_menu(self):
         def file_function():
@@ -155,13 +155,12 @@ class GUI:
             self.arqred.cerrar_sesion()
             self.crear_ventana_principal()
 
-
         def home():
             self.crear_ventana_principal()
 
         menubar = tk.Menu(self.root)
         if self.logeado:
-            archivo_menu = tk.Menu(menubar, tearoff=0)
+            archivo_menu = tk.Menu(menubar, tearoff=0) # tearoff => detach menu dotted lines
             archivo_menu.add_command(label="File option 1", command=file_function)
             archivo_menu.add_command(label="File option 2", command=file_function)
             menubar.add_cascade(label="Archivo", menu=archivo_menu)
