@@ -140,6 +140,7 @@ class GUI:
         self.logeado = False
         self.crear_ventana_principal()
         self.root.mainloop()
+        self.file_path = ""
 
     def barra_menu(self):
         def file_function():
@@ -239,10 +240,11 @@ class GUI:
 
         def open_file():
             # Abre el selector de fichero y obtiene la ruta del fichero seleccionado
-            file_path = filedialog.askopenfilename(
+            self.file_path = filedialog.askopenfilename(
                 title="Seleccionar fichero",
                 filetypes=(("Archivos de Excel", "*.xlsx"), ("Todos los archivos", "*.*"))
             )
+
         if logeado:
             self.enviar_frame = tk.Frame(self.root)
             self.enviar_frame.pack(side=tk.LEFT, padx=5, pady=5, fill=tk.BOTH, expand=True)
@@ -255,6 +257,8 @@ class GUI:
             fichero_label.pack(pady=5)
             abrir_fichero = tk.Button(self.enviar_frame, text="Abrir fichero", command=open_file)
             abrir_fichero.pack(pady=5)
+            # ruta_label = tk.Label(self.enviar_frame, text=self.file_path)
+            # ruta_label.pack(pady=5)
 
             analizar_label = tk.Label(self.enviar_frame, text="Analizar")
             analizar_label.pack(pady=5)
@@ -301,9 +305,9 @@ class GUI:
 class Analisis:
 
     def __init__(self):
-        pass
-    def leer_datos(self, fichero):
-        df = pd.read_excel(fichero)
+        gui = GUI()
+    def leer_datos(self):
+        df = pd.read_excel(gui.file_path)
         tiempo = df.values[1:, 0].astype(float)
         ay = df.values[1:, 3].astype(float)
         a = df.values[1:, 1].astype(float)
@@ -572,3 +576,4 @@ if __name__ == "__main__":
     estadistica = Estadistica()
     estadistica.porcentiles_altura("M", 28)
     gui = GUI()
+    Analisis()
