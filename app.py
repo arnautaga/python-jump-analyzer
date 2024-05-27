@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog
 import socket
+import darkdetect
 import json
 import datetime
 import pandas as pd
@@ -134,8 +135,10 @@ class ARQRED:
 class GUI:
     def __init__(self):
         self.root = tk.Tk()
-        self.root.title("APP")
+        self.root.title("POLI[LOCURA]")
         self.root.geometry("750x600")
+        self.root.resizable(False, False)
+        self.root.config(bg="#5D57F9")
         self.arqred = ARQRED()
         self.logeado = False
         self.crear_ventana_principal()
@@ -156,28 +159,49 @@ class GUI:
             self.arqred.cerrar_sesion()
             self.crear_ventana_principal()
 
+        def temas(tema):
+            if tema == "1":
+                color = "#FFFFFF"
+            elif tema == "2":
+                color = "#000000"
+            elif tema == "3":
+                if darkdetect.isDark() == True:  # Devuelve True si el tema del sistema es el oscuro
+                    color = "#000000"
+                else:
+                    color = "#FFFFFF"
+            self.root.config(bg=color)
+            self.bienvenida_frame.config(bg=color)
+            self.inicio_sesion_frame.config(bg=color)
+            self.enviar_frame.config(bg=color)
+            self.leaderboard_frame.config(bg=color)
 
         def home():
             self.crear_ventana_principal()
 
-        menubar = tk.Menu(self.root)
+        self.menubar = tk.Menu(self.root)
         if self.logeado:
-            archivo_menu = tk.Menu(menubar, tearoff=0)
+            archivo_menu = tk.Menu(self.menubar, tearoff=0)
             archivo_menu.add_command(label="File option 1", command=file_function)
             archivo_menu.add_command(label="File option 2", command=file_function)
-            menubar.add_cascade(label="Archivo", menu=archivo_menu)
+            self.menubar.add_cascade(label="Archivo", menu=archivo_menu)
 
-            editar_menu = tk.Menu(menubar, tearoff=0)
+            editar_menu = tk.Menu(self.menubar, tearoff=0)
             editar_menu.add_command(label="Edit option 1", command=edit_function)
             editar_menu.add_command(label="Edit option 2", command=edit_function)
-            menubar.add_cascade(label="Editar", menu=editar_menu)
+            self.menubar.add_cascade(label="Editar", menu=editar_menu)
 
-            menubar.add_command(label="Cerrar sesión", command=cerrar_sesion)
+            self.menubar.add_command(label="Cerrar sesión", command=cerrar_sesion)
         else:
-            menubar.add_command(label="Iniciar sesión", command=iniciar_sesion)
-            menubar.add_command(label="Home", command=home)
+            self.menubar.add_command(label="Iniciar sesión", command=iniciar_sesion)
+            self.menubar.add_command(label="Home", command=home)
+        seleccionar_tema_menu = tk.Menu(self.menubar, tearoff=0)
+        seleccionar_tema_menu.add_command(label="Claro", command=lambda: temas("1"))
+        seleccionar_tema_menu.add_command(label="Oscuro", command=lambda: temas("2"))
+        seleccionar_tema_menu.add_command(label="Por defecto del sistema", command=lambda: temas("3"))
+        self.menubar.add_cascade(label="Temas", menu=seleccionar_tema_menu)
 
-        self.root.config(menu=menubar)
+
+        self.root.config(menu=self.menubar)
 
     def crear_ventana_principal(self):
         self.limpiar_ventana()
@@ -186,7 +210,7 @@ class GUI:
         self.bienvenida_frame = tk.Frame(self.root)
         self.bienvenida_frame.pack()
 
-        imagen_bienvenida = tk.PhotoImage(file="imagen_bienvenida.png")  # Asegúrate de tener esta imagen
+        imagen_bienvenida = tk.PhotoImage(file="logo.png")
         label_imagen = tk.Label(self.bienvenida_frame, image=imagen_bienvenida)
         label_imagen.image = imagen_bienvenida
         label_imagen.pack()
