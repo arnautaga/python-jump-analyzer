@@ -9,6 +9,7 @@ from scipy.ndimage import gaussian_filter1d as gf
 import matplotlib.pyplot as plt
 from scipy.integrate import cumulative_trapezoid
 
+from definitiva_promu_fisica_mates import get_datos_analisis
 
 class ARQRED:
     def __init__(self):
@@ -242,6 +243,35 @@ class GUI:
                 title="Seleccionar fichero",
                 filetypes=(("Archivos de Excel", "*.xlsx"), ("Todos los archivos", "*.*"))
             )
+
+        def analizar_archivo():
+            self.limpiar_ventana()
+            self.barra_menu()
+
+            # TODO: MASA
+            datos = get_datos_analisis(self.file_path, 65)
+
+            self.datos_frame = tk.Frame(self.root)
+            self.graficas_frame = tk.Frame(self.root)
+            self.datos_frame.pack(side=tk.LEFT, padx=5, pady=5, fill=tk.BOTH, expand=True)
+            self.graficas_frame.pack(side=tk.RIGHT, padx=5, pady=5, fill=tk.BOTH, expand=True)
+
+            tk.Label(self.datos_frame,text='Datos del salto', font='bold').pack(pady=5)
+            tk.Label(self.graficas_frame,text='Gráficas', font='bold').pack(pady=5)
+
+            tk.Label(self.datos_frame, text='La gravedad estimada del móvil es: {0:.2f} m/s²'.format(datos["a_grav"])).pack(pady=5)
+            tk.Label(self.datos_frame, text='La aceleracion maxima durante el vuelo es: {0:.2f} m/s²'.format(datos["a_max"])).pack(pady=5)
+            tk.Label(self.datos_frame, text='La fuerza maxima durante el vuelo es: {0:.2f} N'.format(datos["f_max"])).pack(pady=5)
+            tk.Label(self.datos_frame, text='La velocidad maxima durante su vuelo es: {0:.2f} m/s.'.format(datos["v_max"])).pack(pady=5)
+            tk.Label(self.datos_frame, text='La potencia maxima durante el vuelo es: {0:.2f} W'.format(datos["p_max"])).pack(pady=5)
+            tk.Label(self.datos_frame, text='La altura del salto es: {0:.2f} metros.'.format(datos["alt_salto"])).pack(pady=5)
+            tk.Label(self.datos_frame, text='La duración del vuelo es: {0:.2f} segundos.'.format(datos["t_vuelo"])).pack(pady=5)
+
+            tk.Button(self.graficas_frame, text='Mostrar gráfica de aceleracion', command=lambda: print('Mostrar gráfica de aceleracion')).pack(pady=5)
+            tk.Button(self.graficas_frame, text='Mostrar gráfica de fuerza', command=lambda: print('Mostrar gráfica de fuerza')).pack(pady=5)
+            tk.Button(self.graficas_frame, text='Mostrar gráfica de velocidad', command=lambda: print('Mostrar gráfica de velocidad')).pack(pady=5)
+            tk.Button(self.graficas_frame, text='Mostrar gráfica de potencia', command=lambda: print('Mostrar gráfica de potencia')).pack(pady=5)
+
         if logeado:
             self.enviar_frame = tk.Frame(self.root)
             self.enviar_frame.pack(side=tk.LEFT, padx=5, pady=5, fill=tk.BOTH, expand=True)
@@ -257,7 +287,7 @@ class GUI:
 
             analizar_label = tk.Label(self.enviar_frame, text="Analizar")
             analizar_label.pack(pady=5)
-            analizar_button = tk.Button(self.enviar_frame, text="Analizar", command=lambda: print("Analizar"))
+            analizar_button = tk.Button(self.enviar_frame, text="Analizar", command=analizar_archivo)
             analizar_button.pack(pady=5)
 
             enviar_label = tk.Label(self.enviar_frame, text="Enviar")
@@ -289,7 +319,7 @@ class GUI:
 
             analizar_label = tk.Label(self.enviar_frame, text="Analizar")
             analizar_label.pack(pady=5)
-            analizar_button = tk.Button(self.enviar_frame, text="Analizar", command=lambda: print("Analizar"))
+            analizar_button = tk.Button(self.enviar_frame, text="Analizar", command=analizar_archivo)
             analizar_button.pack(pady=5)
 
             # Sección de leaderboard
