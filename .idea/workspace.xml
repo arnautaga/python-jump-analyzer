@@ -5,8 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7e9647cb-9191-40ce-9bda-7f79011f1837" name="Changes" comment="versión definiriva de fisica-mates casi implementada en la app. Falta lógica del main.&#10;Implementación temas, falla en algunos casos">
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/definitiva_promu_fisica-mates.py" beforeDir="false" afterPath="$PROJECT_DIR$/analisisarchivo.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/analisis.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/analisisarchivo.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/estadistica.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/gui.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/redes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AI_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/misc/AI_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ejemplo_Salto_12_04.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/misc/Ejemplo_Salto_12_04.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/asistente.py" beforeDir="false" afterPath="$PROJECT_DIR$/misc/asistente.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/definitiva_promu_fisica-mates.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/imagen_bienvenida.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/imagen_bienvenida.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/logo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/muestras-sep-coma.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/archivo_salto.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prueba.py" beforeDir="false" afterPath="$PROJECT_DIR$/misc/prueba.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_videoanalisis.py" beforeDir="false" afterPath="$PROJECT_DIR$/misc/test_videoanalisis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/video.mp4" beforeDir="false" afterPath="$PROJECT_DIR$/misc/video.mp4" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/video.trz" beforeDir="false" afterPath="$PROJECT_DIR$/misc/video.trz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/videoanalisis_ai_model_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/misc/videoanalisis_ai_model_generator.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,29 +57,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.app.executor": "Run",
-    "Python.asistente.executor": "Run",
-    "Python.definitiva_promu_fisica-mates.executor": "Run",
-    "Python.promu_fisica-mates.executor": "Run",
-    "Python.prueba.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main-menu",
-    "last_opened_file_path": "C:/Users/arnau/OneDrive - UPV/GTDM/Primero/PROMU/pythonProject",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.app.executor&quot;: &quot;Run&quot;,
+    &quot;Python.asistente.executor&quot;: &quot;Run&quot;,
+    &quot;Python.definitiva_promu_fisica-mates.executor&quot;: &quot;Run&quot;,
+    &quot;Python.promu_fisica-mates.executor&quot;: &quot;Run&quot;,
+    &quot;Python.prueba.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main-menu&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/arnau/OneDrive - UPV/GTDM/Primero/PROMU/pythonProject&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\arnau\OneDrive - UPV\GTDM\Primero\PROMU\pythonProject" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Iria Lúa\Documents\GitHub\ProMu\app" />
+      <recent name="C:\Users\Iria Lúa\Documents\GitHub\ProMu\misc" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -102,6 +123,7 @@
       <workItem from="1716296204325" duration="2393000" />
       <workItem from="1716546006420" duration="1633000" />
       <workItem from="1716718161713" duration="6299000" />
+      <workItem from="1717080400080" duration="3494000" />
     </task>
     <task id="LOCAL-00001" summary="add">
       <option name="closed" value="true" />

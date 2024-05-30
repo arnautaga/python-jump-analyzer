@@ -266,6 +266,6 @@ def main(fichero, masa):
                    indice_cambio_brusco_velocidad,indice_cambio_brusco_desplazamiento,indice_cambio_brusco_potencia)
 
 
-fichero = "muestras-sep-coma.xlsx"
+fichero = "archivo_salto.xlsx"
 masa = 65  # en teoria esto es el peso de Arnau, pero no se cuanto pesa
 main(fichero, masa)
