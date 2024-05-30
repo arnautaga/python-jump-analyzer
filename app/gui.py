@@ -49,24 +49,18 @@ class GUI:
     def ventana_iniciar_sesion(self, bool=True):
         self.limpiar_ventana()
 
-        self.inicio_sesion_frame = tk.Frame(self.root)
-        self.inicio_sesion_frame.pack()
+        tk.Label(self.root, text="Iniciar sesión", font=('bold', 18)).pack(pady=8)
 
-        label_login = tk.Label(self.inicio_sesion_frame, text="Nombre de usuario:")
-        label_login.pack(pady=5)
-        self.usuario_entry = tk.Entry(self.inicio_sesion_frame)
-        self.usuario_entry.pack(pady=5)
+        tk.Label(self.root, text="Nombre de usuario:").pack(pady=5)
+        self.usuario_entry = tk.Entry(self.root).pack(pady=5)
 
-        label_password = tk.Label(self.inicio_sesion_frame, text="Contraseña:")
-        label_password.pack(pady=5)
-        self.password_entry = tk.Entry(self.inicio_sesion_frame, show="*")
-        self.password_entry.pack(pady=5)
+        tk.Label(self.root, text="Contraseña:").pack(pady=5)
+        self.password_entry = tk.Entry(self.root, show="*").pack(pady=5)
 
-        boton_iniciar = tk.Button(self.inicio_sesion_frame, text="Iniciar sesión", command=self.procesar_inicio_sesion)
-        boton_iniciar.pack(pady=5)
+        tk.Button(self.root, text="Iniciar sesión", command=self.procesar_inicio_sesion, width=13).pack(pady=12)
 
         if not bool:
-            label_error = tk.Label(self.inicio_sesion_frame,
+            label_error = tk.Label(self.root,
                                    text="Usuario o contraseña incorrectos. Por favor, inténtelo de nuevo.", fg="red")
             label_error.pack(pady=5)
 
@@ -94,8 +88,6 @@ class GUI:
 
         tk.Button(self.root, text="Analizar salto", command=self.open_file, height=3, width=30).pack(pady=10)
 
-        return frame
-
     def crear_elementos_logeado(self, enviar_frame, leaderboard_frame):
         tk.Label(enviar_frame, text="Enviar").pack(pady=5)
         tk.Button(enviar_frame, text="Enviar", command=lambda: print("Enviar")).pack(pady=5)
@@ -110,15 +102,20 @@ class GUI:
             for entry in leaderboard_data])
         tk.Label(leaderboard_frame, text=leaderboard_info).pack(pady=5)
 
+
+    
+
     def menu(self, logeado):
         self.logeado = logeado
         self.limpiar_ventana()
 
-        frame = self.crear_menu_base()
+        self.crear_menu_base()
 
         if logeado:
-            tk.Button(self.root, text="Clasificación de saltos", command=self.open_file, height=3, width=30).pack(pady=10)
+            tk.Button(self.root, text="Clasificación de saltos", command=self.open_file, height=3, width=30).pack(
+                pady=10)
             tk.Button(self.root, text="Enviar datos de salto", command=self.open_file, height=3, width=30).pack(pady=10)
             tk.Button(self.root, text="Cerrar sesión", command=self.open_file, height=2, width=15).pack(pady=40)
         else:
-            tk.Button(self.root, text="Iniciar sesión", command=self.open_file, height=2, width=15).pack(pady=40)
+            tk.Button(self.root, text="Iniciar sesión", command=lambda: self.ventana_iniciar_sesion(True), height=2,
+                      width=15).pack(pady=40)
