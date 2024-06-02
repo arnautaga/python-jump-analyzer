@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7e9647cb-9191-40ce-9bda-7f79011f1837" name="Changes" comment="versión definiriva de fisica-mates casi implementada en la app. Falta lógica del main.&#10;Implementación temas, falla en algunos casos" />
+    <list default="true" id="7e9647cb-9191-40ce-9bda-7f79011f1837" name="Changes" comment="versión definiriva de fisica-mates casi implementada en la app. Falta lógica del main.&#10;Implementación temas, falla en algunos casos">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/analisis.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/analisis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/analisisarchivo.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/analisisarchivo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/gui.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -46,7 +51,7 @@
     &quot;Python.prueba.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main-menu&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/arnau/OneDrive - UPV/GTDM/Primero/PROMU/pythonProject&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -60,6 +65,10 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\arnau\OneDrive - UPV\GTDM\Primero\PROMU\pythonProject" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Iria Lúa\Documents\GitHub\ProMu\app" />
+      <recent name="C:\Users\Iria Lúa\Documents\GitHub\ProMu\misc" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -99,6 +108,9 @@
       <workItem from="1716296204325" duration="2393000" />
       <workItem from="1716546006420" duration="1633000" />
       <workItem from="1716718161713" duration="6299000" />
+      <workItem from="1717080400080" duration="3494000" />
+      <workItem from="1717096735568" duration="19000" />
+      <workItem from="1717319706900" duration="3310000" />
     </task>
     <task id="LOCAL-00001" summary="add">
       <option name="closed" value="true" />
