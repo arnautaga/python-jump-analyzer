@@ -13,6 +13,8 @@ class GUI:
         self.analisis = Analisis()
         self.logeado = False
         self.file_path = ""
+        self.masa_entry = tk.Entry
+        self.masa = 0
 
         self.root.title("POLI[LOCURA]")
         self.root.geometry("750x600")
@@ -71,7 +73,7 @@ class GUI:
         self.arqred.iniciar_sesion(usuario, password, self)
 
     def analizar_archivo(self):
-        datos = self.analisis.get_datos_analisis(self.file_path, 65)
+        datos = self.analisis.get_datos_analisis(self.file_path, self.masa)
 
         self.limpiar_ventana()
 
@@ -93,23 +95,30 @@ class GUI:
             pady=5)
 
         tk.Button(graficas_frame, text='Mostrar gráfica de aceleración',
-                  command=lambda: print('Mostrar gráfica de aceleración'), height=2, width=30).pack(pady=(20, 10))
+                  command=lambda: self.analisis.grafica_aceleracion(self.file_path, self.masa), height=2, width=30).pack(pady=(20, 10))
         tk.Button(graficas_frame, text='Mostrar gráfica de fuerza',
-                  command=lambda: print('Mostrar gráfica de fuerza'), height=2, width=30).pack(pady=10)
+                  command=lambda: self.analisis.grafica_fuerza(self.file_path, self.masa), height=2, width=30).pack(pady=10)
         tk.Button(graficas_frame, text='Mostrar gráfica de velocidad',
-                  command=lambda: print('Mostrar gráfica de velocidad'), height=2, width=30).pack(pady=10)
+                  command=lambda: self.analisis.grafica_velocidad(self.file_path, self.masa), height=2, width=30).pack(pady=10)
         tk.Button(graficas_frame, text='Mostrar gráfica de potencia',
-                  command=lambda: print('Mostrar gráfica de potencia'), height=2, width=30).pack(pady=10)
+                  command=lambda: self.analisis.grafica_potencia(self.file_path, self.masa), height=2, width=30).pack(pady=10)
 
     def open_file(self):
-        # Abre el selector de fichero y obtiene la ruta del fichero seleccionado
-        self.file_path = filedialog.askopenfilename(
-            title="Seleccionar fichero",
-            filetypes=(("Archivos de Excel", "*.xlsx"), ("Todos los archivos", "*.*"))
-        )
+        if not self.masa_entry.get()=='':
+            if not int(float(self.masa_entry.get())) <= 0:
+                # Abre el selector de fichero y obtiene la ruta del fichero seleccionado
+                self.file_path = filedialog.askopenfilename(
+                    title="Seleccionar fichero",
+                    filetypes=(("Archivos de Excel", "*.xlsx"), ("Todos los archivos", "*.*"))
+                )
 
-        if self.file_path:
-            self.analizar_archivo()
+                if self.file_path:
+                    self.masa = int(float(self.masa_entry.get()))
+                    self.analizar_archivo()
+            else:
+                tk.messagebox.showerror('Error', 'Valor de masa inválido.')
+        else:
+            tk.messagebox.showerror('Error', 'Por favor, introduzca la masa.')
 
     def crear_pantalla_analisis(self):
         self.limpiar_ventana()
@@ -122,7 +131,11 @@ class GUI:
         tk.Label(datos_frame, text='Datos del salto', font='bold').pack(pady=5)
         tk.Label(graficas_frame, text='Gráficas', font='bold').pack(pady=5)
 
-        tk.Label(datos_frame, text='Por favor, seleccione un archivo:').pack(pady=5)
+        tk.Label(datos_frame, text='Introduzca la masa en kilogramos:').pack(pady=5)
+        self.masa_entry = tk.Entry(datos_frame)
+        self.masa_entry.pack(pady=5)
+
+        tk.Label(datos_frame, text='Seleccione un archivo:').pack(pady=5)
         tk.Button(datos_frame, text='Seleccionar', command=lambda: self.open_file()).pack(pady=5)
 
         return datos_frame, graficas_frame

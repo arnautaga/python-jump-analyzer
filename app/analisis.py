@@ -4,6 +4,7 @@ from scipy.ndimage import gaussian_filter1d as gf
 import matplotlib.pyplot as plt
 from scipy.integrate import cumulative_trapezoid as cumtrapz
 
+
 class Analisis:
 
     def leer_datos(self, file_path):
@@ -69,7 +70,6 @@ class Analisis:
         return maximo, minimo
 
     # Función para identificar cambios abruptos en una señal
-
     def identificar_cambio_brusco(self, signal, sampling_rate=250, umbral=0.25):
         # Convertir 0.2 segundos a índice de muestra
         start_index = int(0.2 * sampling_rate)
@@ -98,121 +98,9 @@ class Analisis:
         potencia_filtrada = velocidad_filtrado * fuerza_filtrada
         return velocidad, velocidad_filtrado, desplazamiento, desplazamiento_filtrado, potencia, potencia_filtrada
 
-    # Función para calcular la altura del salto
     def calcular_altura_salto(self, velocidad_maxima, aceleracion_gravitatoria):
         altura_saltado = (velocidad_maxima ** 2) / (2 * aceleracion_gravitatoria)
         return altura_saltado
-
-    # Función para graficar los resultados
-
-    # !!!IMPORTANTE!!!: LA GRAFICA DE DESPLAZAMIENTO NO ES CORRECTO PORQUE
-    # VA ACUMULANDO ERRORES DE INTEGRAR 2 VECES.
-    # -> NO USARLO PARA LA APLICACION/ EXPLICARLO EN LA EXPOSICION
-
-    # Usamos el maximo y minimo de velocidad para encontrar intervalo TIA de aceleracion, fuerza, velocidad etc
-
-    def hacer_graficos(self, tiempo_recortado, a_v_real_recortada, a_v_real_filtrado_recortado, fuerza, fuerza_filtrada,
-                       velocidad, velocidad_filtrado, desplazamiento, desplazamiento_filtrado, potencia,
-                       potencia_filtrada,
-                       maximos_velocidad, minimos_velocidad, indice_cambio_brusco_aceleracion,
-                       indice_cambio_brusco_fuerza,
-                       indice_cambio_brusco_velocidad, indice_cambio_brusco_desplazamiento,
-                       indice_cambio_brusco_potencia):
-
-        # aceleracion recortado y quitado la g
-
-        plt.plot(tiempo_recortado, a_v_real_recortada, label="Aceleración con gravedad restada")
-        plt.plot(tiempo_recortado, a_v_real_filtrado_recortado, label="Filtro gaussiano")
-
-        plt.plot(tiempo_recortado[maximos_velocidad], a_v_real_filtrado_recortado[maximos_velocidad], "x",
-                 label="Despegue")
-        plt.plot(tiempo_recortado[minimos_velocidad], a_v_real_filtrado_recortado[minimos_velocidad], "x",
-                 label="Landing")
-        plt.fill_between(tiempo_recortado[maximos_velocidad:minimos_velocidad],
-                         a_v_real_filtrado_recortado[minimos_velocidad], a_v_real_filtrado_recortado[maximos_velocidad],
-                         alpha=0.3, color='red', label='Intervalo TIA')
-        plt.plot(tiempo_recortado[indice_cambio_brusco_fuerza],
-                 a_v_real_filtrado_recortado[indice_cambio_brusco_fuerza], "x", label="Inicio de impulso")
-        # aqui he hecho un poco de trampa porque no sale bien si pongo indice_cambio_brusco_aceleracion, pero me sale bien con fuerza, explicamos en memoria que hemos hecho con indice_cambio_brusco_aceleracion
-
-        plt.xlabel('Tiempo')
-        plt.ylabel('Aceleración en y')
-        plt.grid(True)
-        plt.legend()
-        plt.show()
-
-        # fuerza recortado no quitado la g
-
-        plt.figure()
-        plt.plot(tiempo_recortado, fuerza, label="Fuerza")
-        plt.plot(tiempo_recortado, fuerza_filtrada, label="Fuerza filtrada")
-
-        plt.plot(tiempo_recortado[maximos_velocidad], fuerza_filtrada[maximos_velocidad], "x", label="Despegue")
-        plt.plot(tiempo_recortado[minimos_velocidad], fuerza_filtrada[minimos_velocidad], "x", label="Landing")
-        plt.fill_between(tiempo_recortado[maximos_velocidad:minimos_velocidad], fuerza_filtrada[minimos_velocidad],
-                         fuerza_filtrada[maximos_velocidad], alpha=0.3, color='red', label='Intervalo TIA')
-        plt.plot(tiempo_recortado[indice_cambio_brusco_fuerza], fuerza_filtrada[indice_cambio_brusco_fuerza], "x",
-                 label="Inicio de impulso")
-
-        plt.xlabel('Tiempo')
-        plt.ylabel('Fuerza en y')
-        plt.grid(True)
-        plt.legend()
-        plt.show()
-
-        # velocidad recortado y g quitado
-
-        plt.figure()
-        plt.plot(tiempo_recortado, velocidad, label="Velocidad")
-        plt.plot(tiempo_recortado, velocidad_filtrado, label="Velocidad filtrada")
-
-        plt.plot(tiempo_recortado[maximos_velocidad], velocidad_filtrado[maximos_velocidad], "x", label="Despegue")
-        plt.plot(tiempo_recortado[minimos_velocidad], velocidad_filtrado[minimos_velocidad], "x", label="Landing")
-        plt.fill_between(tiempo_recortado[maximos_velocidad:minimos_velocidad], velocidad_filtrado[minimos_velocidad],
-                         velocidad_filtrado[maximos_velocidad], alpha=0.3, color='red', label='Intervalo TIA')
-
-        plt.xlabel('Tiempo')
-        plt.ylabel('Velocidad en y')
-        plt.grid(True)
-        plt.legend()
-        plt.show()
-
-        # desplazamiento recortado y g quitado (No usar en aplicacion o explicar en exposicion)
-
-        plt.figure()
-        plt.plot(tiempo_recortado, desplazamiento, label="Desplazamiento")
-        plt.plot(tiempo_recortado, desplazamiento_filtrado, label="Desplazamiento filtrado")
-
-        plt.plot(tiempo_recortado[maximos_velocidad], desplazamiento_filtrado[maximos_velocidad], "x", label="Despegue")
-        plt.plot(tiempo_recortado[minimos_velocidad], desplazamiento_filtrado[minimos_velocidad], "x", label="Landing")
-        plt.fill_between(tiempo_recortado[maximos_velocidad:minimos_velocidad],
-                         desplazamiento_filtrado[minimos_velocidad], desplazamiento_filtrado[maximos_velocidad],
-                         alpha=0.3, color='red', label='Intervalo TIA')
-
-        plt.xlabel('Tiempo')
-        plt.ylabel('Desplazamiento en y')
-        plt.grid(True)
-        plt.legend()
-        plt.show()
-
-        # potencia recortado y g quitado
-
-        plt.figure()
-        plt.plot(tiempo_recortado, potencia, label="Potencia")
-        plt.plot(tiempo_recortado, potencia_filtrada, label="Potencia filtrada")
-
-        plt.plot(tiempo_recortado[maximos_velocidad], potencia_filtrada[maximos_velocidad], "x", label="Despegue")
-        plt.plot(tiempo_recortado[minimos_velocidad], potencia_filtrada[minimos_velocidad], "x", label="Landing")
-        plt.fill_between(tiempo_recortado[maximos_velocidad:minimos_velocidad], potencia_filtrada[minimos_velocidad],
-                         potencia_filtrada[maximos_velocidad], alpha=0.3, color='red', label='Intervalo TIA')
-        plt.plot(tiempo_recortado[indice_cambio_brusco_potencia], potencia_filtrada[indice_cambio_brusco_potencia], "x",
-                 label="Inicio de impulso")
-
-        plt.xlabel('Tiempo')
-        plt.ylabel('Potencia en y')
-        plt.grid(True)
-        plt.legend()
-        plt.show()
 
     def get_datos_analisis(self, fichero, masa):
         tiempo, ay, a = self.leer_datos(fichero)
@@ -234,8 +122,9 @@ class Analisis:
          desplazamiento,
          desplazamiento_filtrado,
          potencia,
-         potencia_filtrada) = self.calcular_cinematica(tiempo_recortado, a_v_real_recortada, a_v_real_filtrado_recortado,
-                                                  masa, fuerza, fuerza_filtrada)
+         potencia_filtrada) = self.calcular_cinematica(tiempo_recortado, a_v_real_recortada,
+                                                       a_v_real_filtrado_recortado,
+                                                       masa, fuerza, fuerza_filtrada)
 
         minimos_aceleracion = self.calcular_max_min(a_v_real_filtrado_recortado)[1]
         maximos_fuerza, minimos_fuerza = self.calcular_max_min(fuerza_filtrada)
@@ -256,3 +145,142 @@ class Analisis:
         return {'a_grav': aceleracion_gravitatoria, 'a_max': aceleracion_maxima,
                 'f_max': fuerza_maxima, 'v_max': velocidad_maxima, 'p_max': potencia_maxima_vuelo,
                 'alt_salto': altura_saltado, 't_vuelo': duracion_vuelo}
+
+    def grafica_aceleracion(self, fichero, masa):
+        tiempo, ay, a = self.leer_datos(fichero)
+
+        a_v, a_v_filtrado = self.calcular_aceleracion_vertical(ay, a)
+        aceleracion_gravitatoria = self.estimar_gravedad(tiempo, a_v)
+        a_vertical_real = self.restar_gravedad(a_v, aceleracion_gravitatoria)
+        (tiempo_recortado, a_v_real_recortada,
+         a_v_real_filtrado_recortado, a_v_recortado) = self.recortar_datos(tiempo, a_vertical_real, a_v, a_v_filtrado)[
+                                                       :4]
+        fuerza, fuerza_filtrada = self.calcular_fuerza(a_v_recortado, masa)
+        velocidad_filtrado = self.calcular_cinematica(tiempo_recortado, a_v_real_recortada, a_v_real_filtrado_recortado,
+                                                      masa, fuerza, fuerza_filtrada)[1]
+        maximos_velocidad, minimos_velocidad = self.calcular_max_min(velocidad_filtrado)
+        indice_cambio_brusco_fuerza = self.identificar_cambio_brusco(fuerza)
+
+        plt.figure()
+        plt.plot(tiempo_recortado, a_v_real_recortada, label="Aceleración con gravedad restada")
+        plt.plot(tiempo_recortado, a_v_real_filtrado_recortado, label="Filtro gaussiano")
+        plt.plot(tiempo_recortado[maximos_velocidad], a_v_real_filtrado_recortado[maximos_velocidad], "x",
+                 label="Despegue")
+        plt.plot(tiempo_recortado[minimos_velocidad], a_v_real_filtrado_recortado[minimos_velocidad], "x",
+                 label="Landing")
+        plt.fill_between(tiempo_recortado[maximos_velocidad:minimos_velocidad],
+                         a_v_real_filtrado_recortado[minimos_velocidad], a_v_real_filtrado_recortado[maximos_velocidad],
+                         alpha=0.3, color='red', label='Intervalo TIA')
+        plt.plot(tiempo_recortado[indice_cambio_brusco_fuerza],
+                 a_v_real_filtrado_recortado[indice_cambio_brusco_fuerza],
+                 "x", label="Inicio de impulso")
+
+        plt.xlabel('Tiempo')
+        plt.ylabel('Aceleración en y')
+        plt.grid(True)
+        plt.legend()
+        plt.show()
+
+    def grafica_fuerza(self, fichero, masa):
+        tiempo, ay, a = self.leer_datos(fichero)
+        a_v, a_v_filtrado = self.calcular_aceleracion_vertical(ay, a)
+        aceleracion_gravitatoria = self.estimar_gravedad(tiempo, a_v)
+        a_vertical_real = self.restar_gravedad(a_v, aceleracion_gravitatoria)
+
+        (tiempo_recortado,
+         a_v_real_recortada,
+         a_v_real_filtrado_recortado,
+         a_v_recortado) = self.recortar_datos(tiempo, a_vertical_real, a_v, a_v_filtrado)[:4]
+
+        fuerza, fuerza_filtrada = self.calcular_fuerza(a_v_recortado, masa)
+        velocidad_filtrado = self.calcular_cinematica(tiempo_recortado, a_v_real_recortada, a_v_real_filtrado_recortado,
+                                                      masa, fuerza, fuerza_filtrada)[1]
+
+        maximos_velocidad, minimos_velocidad = self.calcular_max_min(velocidad_filtrado)
+        indice_cambio_brusco_fuerza = self.identificar_cambio_brusco(fuerza)
+
+        plt.figure()
+        plt.plot(tiempo_recortado, fuerza, label="Fuerza")
+        plt.plot(tiempo_recortado, fuerza_filtrada, label="Fuerza filtrada")
+
+        plt.plot(tiempo_recortado[maximos_velocidad], fuerza_filtrada[maximos_velocidad], "x", label="Despegue")
+        plt.plot(tiempo_recortado[minimos_velocidad], fuerza_filtrada[minimos_velocidad], "x", label="Landing")
+        plt.fill_between(tiempo_recortado[maximos_velocidad:minimos_velocidad], fuerza_filtrada[minimos_velocidad],
+                         fuerza_filtrada[maximos_velocidad], alpha=0.3, color='red', label='Intervalo TIA')
+        plt.plot(tiempo_recortado[indice_cambio_brusco_fuerza], fuerza_filtrada[indice_cambio_brusco_fuerza], "x",
+                 label="Inicio de impulso")
+
+        plt.xlabel('Tiempo')
+        plt.ylabel('Fuerza en y')
+        plt.grid(True)
+        plt.legend()
+        plt.show()
+
+    def grafica_velocidad(self, fichero, masa):
+        tiempo, ay, a = self.leer_datos(fichero)
+        a_v, a_v_filtrado = self.calcular_aceleracion_vertical(ay, a)
+        aceleracion_gravitatoria = self.estimar_gravedad(tiempo, a_v)
+        a_vertical_real = self.restar_gravedad(a_v, aceleracion_gravitatoria)
+
+        (tiempo_recortado,
+         a_v_real_recortada,
+         a_v_real_filtrado_recortado,
+         a_v_recortado) = self.recortar_datos(tiempo, a_vertical_real, a_v, a_v_filtrado)[:4]
+        fuerza, fuerza_filtrada = self.calcular_fuerza(a_v_recortado, masa)
+
+        velocidad, velocidad_filtrado = self.calcular_cinematica(tiempo_recortado, a_v_real_recortada,
+                                                                 a_v_real_filtrado_recortado,
+                                                                 masa, fuerza, fuerza_filtrada)[:2]
+        maximos_velocidad, minimos_velocidad = self.calcular_max_min(velocidad_filtrado)
+
+        plt.figure()
+        plt.plot(tiempo_recortado, velocidad, label="Velocidad")
+        plt.plot(tiempo_recortado, velocidad_filtrado, label="Velocidad filtrada")
+
+        plt.plot(tiempo_recortado[maximos_velocidad], velocidad_filtrado[maximos_velocidad], "x", label="Despegue")
+        plt.plot(tiempo_recortado[minimos_velocidad], velocidad_filtrado[minimos_velocidad], "x", label="Landing")
+        plt.fill_between(tiempo_recortado[maximos_velocidad:minimos_velocidad], velocidad_filtrado[minimos_velocidad],
+                         velocidad_filtrado[maximos_velocidad], alpha=0.3, color='red', label='Intervalo TIA')
+
+        plt.xlabel('Tiempo')
+        plt.ylabel('Velocidad en y')
+        plt.grid(True)
+        plt.legend()
+        plt.show()
+
+    def grafica_potencia(self, fichero, masa):
+        tiempo, ay, a = self.leer_datos(fichero)
+        a_v, a_v_filtrado = self.calcular_aceleracion_vertical(ay, a)
+        aceleracion_gravitatoria = self.estimar_gravedad(tiempo, a_v)
+        a_vertical_real = self.restar_gravedad(a_v, aceleracion_gravitatoria)
+
+        (tiempo_recortado,
+         a_v_real_recortada,
+         a_v_real_filtrado_recortado,
+         a_v_recortado) = self.recortar_datos(tiempo, a_vertical_real, a_v, a_v_filtrado)[:4]
+
+        fuerza, fuerza_filtrada = self.calcular_fuerza(a_v_recortado, masa)
+
+        (velocidad, velocidad_filtrado, desplazamiento, desplazamiento_filtrado, potencia,
+         potencia_filtrada) = self.calcular_cinematica(tiempo_recortado, a_v_real_recortada,
+                                                       a_v_real_filtrado_recortado, masa, fuerza, fuerza_filtrada)
+
+        maximos_velocidad, minimos_velocidad = self.calcular_max_min(velocidad_filtrado)
+        indice_cambio_brusco_potencia = self.identificar_cambio_brusco(potencia)
+
+        plt.figure()
+        plt.plot(tiempo_recortado, potencia, label="Potencia")
+        plt.plot(tiempo_recortado, potencia_filtrada, label="Potencia filtrada")
+
+        plt.plot(tiempo_recortado[maximos_velocidad], potencia_filtrada[maximos_velocidad], "x", label="Despegue")
+        plt.plot(tiempo_recortado[minimos_velocidad], potencia_filtrada[minimos_velocidad], "x", label="Landing")
+        plt.fill_between(tiempo_recortado[maximos_velocidad:minimos_velocidad], potencia_filtrada[minimos_velocidad],
+                         potencia_filtrada[maximos_velocidad], alpha=0.3, color='red', label='Intervalo TIA')
+        plt.plot(tiempo_recortado[indice_cambio_brusco_potencia], potencia_filtrada[indice_cambio_brusco_potencia], "x",
+                 label="Inicio de impulso")
+
+        plt.xlabel('Tiempo')
+        plt.ylabel('Potencia en y')
+        plt.grid(True)
+        plt.legend()
+        plt.show()
