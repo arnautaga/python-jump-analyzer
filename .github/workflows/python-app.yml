@@ -28,7 +28,7 @@ jobs:
 
     - name: Build with PyInstaller
       run: |
-        pyinstaller --noconsole --onefile --icon=logo.ico app.py
+        pyinstaller --noconsole --onefile --icon=logo.ico app/app.py
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
