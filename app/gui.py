@@ -6,6 +6,7 @@ import numpy as np
 from redes import Redes
 from analisis import Analisis
 
+
 class GUI:
     def __init__(self):
         self.root = tk.Tk()
@@ -95,16 +96,20 @@ class GUI:
             pady=5)
 
         tk.Button(graficas_frame, text='Mostrar gráfica de aceleración',
-                  command=lambda: self.analisis.grafica_aceleracion(self.file_path, self.masa), height=2, width=30).pack(pady=(20, 10))
+                  command=lambda: self.analisis.grafica_aceleracion(self.file_path, self.masa), height=2,
+                  width=30).pack(pady=(20, 10))
         tk.Button(graficas_frame, text='Mostrar gráfica de fuerza',
-                  command=lambda: self.analisis.grafica_fuerza(self.file_path, self.masa), height=2, width=30).pack(pady=10)
+                  command=lambda: self.analisis.grafica_fuerza(self.file_path, self.masa), height=2, width=30).pack(
+            pady=10)
         tk.Button(graficas_frame, text='Mostrar gráfica de velocidad',
-                  command=lambda: self.analisis.grafica_velocidad(self.file_path, self.masa), height=2, width=30).pack(pady=10)
+                  command=lambda: self.analisis.grafica_velocidad(self.file_path, self.masa), height=2, width=30).pack(
+            pady=10)
         tk.Button(graficas_frame, text='Mostrar gráfica de potencia',
-                  command=lambda: self.analisis.grafica_potencia(self.file_path, self.masa), height=2, width=30).pack(pady=10)
+                  command=lambda: self.analisis.grafica_potencia(self.file_path, self.masa), height=2, width=30).pack(
+            pady=10)
 
     def open_file(self):
-        if not self.masa_entry.get()=='':
+        if not self.masa_entry.get() == '':
             if not int(float(self.masa_entry.get())) <= 0:
                 # Abre el selector de fichero y obtiene la ruta del fichero seleccionado
                 self.file_path = filedialog.askopenfilename(
@@ -120,6 +125,17 @@ class GUI:
         else:
             tk.messagebox.showerror('Error', 'Por favor, introduzca la masa.')
 
+    def pantalla_ajustes(self):
+        self.limpiar_ventana()
+
+    def pantalla_reglas(self):
+        self.limpiar_ventana()
+        tk.Label(self.root, text='¿Cómo se debe realizar el salto?', font='bold').pack(pady=(25, 15))
+        tk.Label
+
+        tk.Label(self.root,
+                 text=''
+        'Para realizar un salto correctamente, sigue estos pasos: \n\n\n1. Sujeta firmemente el móvil a la pelvis con una banda elástica, preferiblemente en un lateral,\nentre la cadera y la cresta ilíaca.\n\n2. Desde una posición agachada, cruza los brazos sobre el pecho o apóyalos en la cintura,\ncuidando de no tocar el móvil.\n\n3. Configura el dispositivo para que emita un aviso de 5 segundos y espere otros\n5 segundos para la medición (configuración predeterminada).\n\n4. Tras el aviso, espera al menos dos segundos en reposo para calibrar la medida. Luego, salta\nverticalmente con toda tu fuerza.\n\n5. Al caer, permanece erguido y quieto hasta oír el siguiente aviso.\n\n6. Finalmente, envía los datos obtenidos por correo o cualquier otro método, asegurándose de\nidentificar claramente la medición.', font=('Arial', 12)).pack(pady=10)
     def crear_pantalla_analisis(self):
         self.limpiar_ventana()
 
@@ -140,18 +156,17 @@ class GUI:
 
         return datos_frame, graficas_frame
 
-
     def crear_menu_base(self):
         tk.Label(self.root, text="MENÚ", font=('bold', 30)).pack(pady=5)
 
         frame = tk.Frame(self.root)
         frame.pack(fill=tk.X, expand=False, pady=65)
 
-        tk.Button(frame, text="Ajustes", command=self.open_file, height=2, width=15).grid(row=0, column=1, padx=65)
-        tk.Button(frame, text="Reglas", command=self.open_file, height=2, width=15).grid(row=0, column=2, padx=65)
-        tk.Button(frame, text="Créditos", command=self.open_file, height=2, width=15).grid(row=0, column=3, padx=65)
+        tk.Button(frame, text="Ajustes", command=self.pantalla_ajustes, height=2, width=15).grid(row=0, column=1, padx=125)
+        tk.Button(frame, text="Reglas", command=self.pantalla_reglas, height=2, width=15).grid(row=0, column=2, padx=125)
 
-        tk.Button(self.root, text="Analizar salto", command= lambda: self.crear_pantalla_analisis(), height=3, width=30).pack(pady=10)
+        tk.Button(self.root, text="Analizar salto", command=lambda: self.crear_pantalla_analisis(), height=3,
+                  width=30).pack(pady=10)
 
     def crear_elementos_logeado(self, enviar_frame, leaderboard_frame):
         tk.Label(enviar_frame, text="Enviar").pack(pady=5)
