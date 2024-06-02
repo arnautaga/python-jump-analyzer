@@ -4,12 +4,13 @@ import darkdetect
 import numpy as np
 
 from redes import Redes
-
+from analisis import Analisis
 
 class GUI:
     def __init__(self):
         self.root = tk.Tk()
         self.arqred = Redes()
+        self.analisis = Analisis()
         self.logeado = False
         self.file_path = ""
 
@@ -69,12 +70,63 @@ class GUI:
         password = self.password_entry.get()
         self.arqred.iniciar_sesion(usuario, password, self)
 
+    def analizar_archivo(self):
+        datos = self.analisis.get_datos_analisis(self.file_path, 65)
+
+        self.limpiar_ventana()
+
+        datos_frame, graficas_frame = self.crear_pantalla_analisis()
+
+        tk.Label(datos_frame, text='La gravedad estimada del móvil es: {0:.2f} m/s²'.format(datos["a_grav"])).pack(
+            pady=(30, 0))
+        tk.Label(datos_frame,
+                 text='La aceleracion maxima durante el vuelo es: {0:.2f} m/s²'.format(datos["a_max"])).pack(pady=5)
+        tk.Label(datos_frame, text='La fuerza maxima durante el vuelo es: {0:.2f} N'.format(datos["f_max"])).pack(
+            pady=5)
+        tk.Label(datos_frame,
+                 text='La velocidad maxima durante su vuelo es: {0:.2f} m/s.'.format(datos["v_max"])).pack(pady=5)
+        tk.Label(datos_frame,
+                 text='La potencia maxima durante el vuelo es: {0:.2f} W'.format(datos["p_max"])).pack(pady=5)
+        tk.Label(datos_frame, text='La altura del salto es: {0:.2f} metros.'.format(datos["alt_salto"])).pack(
+            pady=5)
+        tk.Label(datos_frame, text='La duración del vuelo es: {0:.2f} segundos.'.format(datos["t_vuelo"])).pack(
+            pady=5)
+
+        tk.Button(graficas_frame, text='Mostrar gráfica de aceleración',
+                  command=lambda: print('Mostrar gráfica de aceleración'), height=2, width=30).pack(pady=(20, 10))
+        tk.Button(graficas_frame, text='Mostrar gráfica de fuerza',
+                  command=lambda: print('Mostrar gráfica de fuerza'), height=2, width=30).pack(pady=10)
+        tk.Button(graficas_frame, text='Mostrar gráfica de velocidad',
+                  command=lambda: print('Mostrar gráfica de velocidad'), height=2, width=30).pack(pady=10)
+        tk.Button(graficas_frame, text='Mostrar gráfica de potencia',
+                  command=lambda: print('Mostrar gráfica de potencia'), height=2, width=30).pack(pady=10)
+
     def open_file(self):
         # Abre el selector de fichero y obtiene la ruta del fichero seleccionado
         self.file_path = filedialog.askopenfilename(
             title="Seleccionar fichero",
             filetypes=(("Archivos de Excel", "*.xlsx"), ("Todos los archivos", "*.*"))
         )
+
+        if self.file_path:
+            self.analizar_archivo()
+
+    def crear_pantalla_analisis(self):
+        self.limpiar_ventana()
+
+        datos_frame = tk.Frame(self.root)
+        graficas_frame = tk.Frame(self.root)
+        datos_frame.pack(side=tk.LEFT, padx=5, pady=5, fill=tk.BOTH, expand=True)
+        graficas_frame.pack(side=tk.RIGHT, padx=5, pady=5, fill=tk.BOTH, expand=True)
+
+        tk.Label(datos_frame, text='Datos del salto', font='bold').pack(pady=5)
+        tk.Label(graficas_frame, text='Gráficas', font='bold').pack(pady=5)
+
+        tk.Label(datos_frame, text='Por favor, seleccione un archivo:').pack(pady=5)
+        tk.Button(datos_frame, text='Seleccionar', command=lambda: self.open_file()).pack(pady=5)
+
+        return datos_frame, graficas_frame
+
 
     def crear_menu_base(self):
         tk.Label(self.root, text="MENÚ", font=('bold', 30)).pack(pady=5)
@@ -86,7 +138,7 @@ class GUI:
         tk.Button(frame, text="Reglas", command=self.open_file, height=2, width=15).grid(row=0, column=2, padx=65)
         tk.Button(frame, text="Créditos", command=self.open_file, height=2, width=15).grid(row=0, column=3, padx=65)
 
-        tk.Button(self.root, text="Analizar salto", command=self.open_file, height=3, width=30).pack(pady=10)
+        tk.Button(self.root, text="Analizar salto", command= lambda: self.crear_pantalla_analisis(), height=3, width=30).pack(pady=10)
 
     def crear_elementos_logeado(self, enviar_frame, leaderboard_frame):
         tk.Label(enviar_frame, text="Enviar").pack(pady=5)
@@ -101,9 +153,6 @@ class GUI:
             f"Altura: {entry['altura']}, Fecha: {entry['fecha']}"
             for entry in leaderboard_data])
         tk.Label(leaderboard_frame, text=leaderboard_info).pack(pady=5)
-
-
-    
 
     def menu(self, logeado):
         self.logeado = logeado

@@ -6,10 +6,8 @@ from scipy.integrate import cumulative_trapezoid as cumtrapz
 
 class Analisis:
 
-    def __init__(self):
-        gui = GUI()
-    def leer_datos(self):
-        df = pd.read_excel(gui.file_path) # TODO: PASS TO ARGUMENT
+    def leer_datos(self, file_path):
+        df = pd.read_excel(file_path)
         tiempo = df.values[1:, 0].astype(float)
         ay = df.values[1:, 3].astype(float)
         a = df.values[1:, 1].astype(float)
@@ -215,3 +213,46 @@ class Analisis:
         plt.grid(True)
         plt.legend()
         plt.show()
+
+    def get_datos_analisis(self, fichero, masa):
+        tiempo, ay, a = self.leer_datos(fichero)
+        a_v, a_v_filtrado = self.calcular_aceleracion_vertical(ay, a)
+
+        aceleracion_gravitatoria = self.estimar_gravedad(tiempo, a_v)
+
+        a_vertical_real = self.restar_gravedad(a_v, aceleracion_gravitatoria)
+
+        (tiempo_recortado,
+         a_v_real_recortada,
+         a_v_real_filtrado_recortado,
+         a_v_recortado, a_filtrado_recortado) = self.recortar_datos(tiempo, a_vertical_real, a_v, a_v_filtrado)
+
+        fuerza, fuerza_filtrada = self.calcular_fuerza(a_v_recortado, masa)
+
+        (velocidad,
+         velocidad_filtrado,
+         desplazamiento,
+         desplazamiento_filtrado,
+         potencia,
+         potencia_filtrada) = self.calcular_cinematica(tiempo_recortado, a_v_real_recortada, a_v_real_filtrado_recortado,
+                                                  masa, fuerza, fuerza_filtrada)
+
+        minimos_aceleracion = self.calcular_max_min(a_v_real_filtrado_recortado)[1]
+        maximos_fuerza, minimos_fuerza = self.calcular_max_min(fuerza_filtrada)
+        maximos_velocidad, minimos_velocidad = self.calcular_max_min(velocidad_filtrado)
+        maximos_potencia, minimos_potencia = self.calcular_max_min(potencia_filtrada)
+
+        indice_cambio_brusco_aceleracion = self.identificar_cambio_brusco(a_v_real_recortada)
+        indice_cambio_brusco_fuerza = self.identificar_cambio_brusco(fuerza)
+        indice_cambio_brusco_potencia = self.identificar_cambio_brusco(potencia)
+
+        aceleracion_maxima = max(a_v_real_filtrado_recortado[indice_cambio_brusco_aceleracion:minimos_aceleracion])
+        fuerza_maxima = max(fuerza_filtrada[indice_cambio_brusco_fuerza:minimos_fuerza])
+        velocidad_maxima = max(velocidad_filtrado)
+        potencia_maxima_vuelo = max(potencia_filtrada[indice_cambio_brusco_potencia:minimos_potencia])
+        altura_saltado = self.calcular_altura_salto(velocidad_maxima, aceleracion_gravitatoria)
+        duracion_vuelo = tiempo_recortado[minimos_velocidad] - tiempo_recortado[maximos_velocidad]
+
+        return {'a_grav': aceleracion_gravitatoria, 'a_max': aceleracion_maxima,
+                'f_max': fuerza_maxima, 'v_max': velocidad_maxima, 'p_max': potencia_maxima_vuelo,
+                'alt_salto': altura_saltado, 't_vuelo': duracion_vuelo}
