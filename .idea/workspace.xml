@@ -40,26 +40,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.app.executor": "Run",
-    "Python.asistente.executor": "Run",
-    "Python.definitiva_promu_fisica-mates.executor": "Run",
-    "Python.promu_fisica-mates.executor": "Run",
-    "Python.prueba.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/arnau/OneDrive - UPV/GTDM/Primero/PROMU/pythonProject",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.app.executor&quot;: &quot;Run&quot;,
+    &quot;Python.asistente.executor&quot;: &quot;Run&quot;,
+    &quot;Python.definitiva_promu_fisica-mates.executor&quot;: &quot;Run&quot;,
+    &quot;Python.promu_fisica-mates.executor&quot;: &quot;Run&quot;,
+    &quot;Python.prueba.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main-menu&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/arnau/OneDrive - UPV/GTDM/Primero/PROMU/pythonProject&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\arnau\OneDrive - UPV\GTDM\Primero\PROMU\pythonProject" />
@@ -109,6 +109,7 @@
       <workItem from="1717080400080" duration="3494000" />
       <workItem from="1717096735568" duration="19000" />
       <workItem from="1717319706900" duration="3310000" />
+      <workItem from="1717399430391" duration="2812000" />
     </task>
     <task id="LOCAL-00001" summary="add">
       <option name="closed" value="true" />

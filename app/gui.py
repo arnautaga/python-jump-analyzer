@@ -17,6 +17,8 @@ class GUI:
         self.masa_entry = tk.Entry
         self.masa = 0
 
+        self.tema = "Light"
+
         self.root.title("POLI[LOCURA]")
         self.root.geometry("750x600")
         self.root.resizable(False, False)
@@ -125,8 +127,21 @@ class GUI:
         else:
             tk.messagebox.showerror('Error', 'Por favor, introduzca la masa.')
 
+    def cambiar_tema(self, tema):
+        self.tema = tema
+        if self.tema == 'Dark':
+            self.root.configure(background='gray15')
+        elif self.tema == 'Light':
+            self.root.configure(background='light gray')
+
     def pantalla_ajustes(self):
         self.limpiar_ventana()
+
+        tk.Label(self.root, text='Temas', font='bold').pack(pady=(25, 15))
+
+        tk.Button(self.root, text="Tema claro", command= lambda: self.cambiar_tema('Light'), height=2, width=25).pack(pady=(55, 20))
+        tk.Button(self.root, text="Tema oscuro", command= lambda: self.cambiar_tema('Dark'), height=2, width=25).pack(pady=20)
+        tk.Button(self.root, text="Tema del sistema", command= lambda: self.cambiar_tema(darkdetect.theme()), height=2, width=25).pack(pady=20)
 
     def pantalla_reglas(self):
         self.limpiar_ventana()
@@ -136,6 +151,7 @@ class GUI:
         tk.Label(self.root,
                  text=''
         'Para realizar un salto correctamente, sigue estos pasos: \n\n\n1. Sujeta firmemente el móvil a la pelvis con una banda elástica, preferiblemente en un lateral,\nentre la cadera y la cresta ilíaca.\n\n2. Desde una posición agachada, cruza los brazos sobre el pecho o apóyalos en la cintura,\ncuidando de no tocar el móvil.\n\n3. Configura el dispositivo para que emita un aviso de 5 segundos y espere otros\n5 segundos para la medición (configuración predeterminada).\n\n4. Tras el aviso, espera al menos dos segundos en reposo para calibrar la medida. Luego, salta\nverticalmente con toda tu fuerza.\n\n5. Al caer, permanece erguido y quieto hasta oír el siguiente aviso.\n\n6. Finalmente, envía los datos obtenidos por correo o cualquier otro método, asegurándose de\nidentificar claramente la medición.', font=('Arial', 12)).pack(pady=10)
+
     def crear_pantalla_analisis(self):
         self.limpiar_ventana()
 
