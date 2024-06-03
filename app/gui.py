@@ -6,11 +6,10 @@ import numpy as np
 from redes import Redes
 from analisis import Analisis
 
-
 class GUI:
     def __init__(self):
         self.root = tk.Tk()
-        self.arqred = Redes()
+        self.redes = Redes()
         self.analisis = Analisis()
         self.logeado = False
         self.file_path = ""
@@ -74,7 +73,7 @@ class GUI:
     def procesar_inicio_sesion(self):
         usuario = self.usuario_entry.get()
         password = self.password_entry.get()
-        self.arqred.iniciar_sesion(usuario, password, self)
+        self.redes.iniciar_sesion(usuario, password, self)
 
     def ventana_iniciar_sesion(self, bool=True):
         self.limpiar_ventana()
@@ -135,7 +134,7 @@ class GUI:
                   command=lambda: self.analisis.grafica_potencia(self.file_path, self.masa), height=2, width=30,
                   bg=self.get_color_tema('bg'), fg=self.get_color_tema('fg')).pack(pady=10)
 
-    def open_file(self):
+    def abrir_archivo(self):
         if not self.masa_entry.get() == '':
             if not int(float(self.masa_entry.get())) <= 0:
                 # Abre el selector de fichero y obtiene la ruta del fichero seleccionado
@@ -209,13 +208,13 @@ class GUI:
 
         tk.Label(datos_frame, text='Seleccione un archivo:', bg=self.get_color_tema('bg'),
                  fg=self.get_color_tema('fg')).pack(pady=5)
-        tk.Button(datos_frame, text='Seleccionar', command=lambda: self.open_file(), bg=self.get_color_tema('bg'),
+        tk.Button(datos_frame, text='Seleccionar', command=lambda: self.abrir_archivo(), bg=self.get_color_tema('bg'),
                   fg=self.get_color_tema('fg')).pack(pady=5)
 
         return datos_frame, graficas_frame
 
     def cargar_ranking(self):
-        leaderboard_data = self.arqred.obtener_leaderboard()
+        leaderboard_data = self.redes.obtener_leaderboard()
 
         total_rows = len(leaderboard_data)
         total_columns = len(leaderboard_data[0])
@@ -252,7 +251,7 @@ class GUI:
 
     def enviar_datos(self, nombre, grupo, altura, fecha, status_text, data_text):
         if nombre and grupo and altura and fecha:
-            res = self.arqred.enviar_salto(nombre, grupo, altura, fecha)
+            res = self.redes.enviar_salto(nombre, grupo, altura, fecha)
 
             if res.startswith("200"):
                 status_text.config(text="Datos enviados. ¡Estás en el top 10!")
@@ -289,7 +288,7 @@ class GUI:
 
         tk.Label(self.root, text="Fecha:", bg=self.get_color_tema('bg'), fg=self.get_color_tema('fg')).pack(
             pady=(10, 5))
-        fecha = self.arqred.formato_fecha()
+        fecha = self.redes.formato_fecha()
         tk.Label(self.root, text=fecha, bg=self.get_color_tema('bg'), fg=self.get_color_tema('fg')).pack(pady=5)
 
         status_text = tk.Label(self.root, bg=self.get_color_tema('bg'), fg=self.get_color_tema('fg'))
@@ -320,7 +319,7 @@ class GUI:
     def cerrar_sesion(self):
         answer = tk.messagebox.askokcancel("Cerrar sesión", "¿Desea cerrar sesión?")
         if answer:
-            self.arqred.cerrar_sesion()
+            self.redes.cerrar_sesion()
             self.crear_ventana_principal()
 
     def menu(self, logeado):

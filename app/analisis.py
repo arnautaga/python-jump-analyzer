@@ -4,7 +4,6 @@ from scipy.ndimage import gaussian_filter1d as gf
 import matplotlib.pyplot as plt
 from scipy.integrate import cumulative_trapezoid as cumtrapz
 
-
 class Analisis:
 
     def leer_datos(self, file_path):
