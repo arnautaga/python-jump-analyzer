@@ -21,7 +21,7 @@ class GUI:
         self.password = tk.Entry
 
         self.tema = "Light"
-        #self.temas = {"Light": , "Dark":}
+        # self.temas = {"Light": , "Dark":}
 
         self.root.title("POLI[LOCURA]")
         self.root.geometry("750x600")
@@ -190,8 +190,46 @@ class GUI:
 
         return datos_frame, graficas_frame
 
+    def cargar_ranking(self):
+        leaderboard_data = self.arqred.obtener_leaderboard()
+
+        total_rows = len(leaderboard_data)
+        total_columns = len(leaderboard_data[0])
+
+        frame = tk.Frame(self.root)
+        frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
+        for i in range(total_rows):
+            for j in range(total_columns):
+                color = "black"
+
+                if i <= 3:
+                    if i == 1:
+                        color = "gold2"
+                    elif i == 2:
+                        color = "slate gray"
+                    elif i == 3:
+                        color = "brown"
+                    e = tk.Entry(frame, width=12, fg=color, font=('Arial', 14, "bold"))
+                else:
+                    e = tk.Entry(frame, width=12, fg=color, font=('Arial', 14))
+
+                e.grid(row=i, column=j)
+                e.insert(tk.END, leaderboard_data[i][j])
+
     def crear_pantalla_ranking(self):
         self.limpiar_ventana()
+        self.barra_menu()
+
+        leaderboard_text = tk.Label(self.root, text="Leaderboard", font="bold")
+        leaderboard_text.pack(pady=5)
+
+        tk.Label(self.root, text="Cargar datos del leaderboard:\n(esta acción puede tardar un poco)").pack(pady=10)
+        tk.Button(self.root, text="Cargar", command= lambda: self.cargar_ranking(), height=2, width=10).pack(pady=(0, 10))
+
+    def crear_pantalla_envio(self):
+        self.limpiar_ventana()
+        self.barra_menu()
 
     def crear_menu_base(self):
         tk.Label(self.root, text="MENÚ", font=('bold', 30)).pack(pady=5)
@@ -229,10 +267,13 @@ class GUI:
         self.crear_menu_base()
 
         if logeado:
-            tk.Button(self.root, text="Clasificación de saltos", command=self.open_file, height=3, width=30).pack(
+            tk.Button(self.root, text="Clasificación de saltos", command=lambda: self.crear_pantalla_ranking(),
+                      height=3, width=30).pack(
                 pady=10)
-            tk.Button(self.root, text="Enviar datos de salto", command=self.open_file, height=3, width=30).pack(pady=10)
-            tk.Button(self.root, text="Cerrar sesión", command=self.open_file, height=2, width=15).pack(pady=40)
+            tk.Button(self.root, text="Enviar datos de salto", command=lambda: self.crear_pantalla_envio(), height=3,
+                      width=30).pack(pady=10)
+            tk.Button(self.root, text="Cerrar sesión", command=lambda: self.arqred.cerrar_sesion(), height=2,
+                      width=15).pack(pady=40)
         else:
             tk.Button(self.root, text="Iniciar sesión", command=lambda: self.ventana_iniciar_sesion(True), height=2,
                       width=15).pack(pady=40)
