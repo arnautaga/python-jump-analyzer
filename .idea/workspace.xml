@@ -5,17 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7e9647cb-9191-40ce-9bda-7f79011f1837" name="Changes" comment="versión definiriva de fisica-mates casi implementada en la app. Falta lógica del main.&#10;Implementación temas, falla en algunos casos">
-      <change afterPath="$PROJECT_DIR$/app/test_analisis.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/test_gui.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/test_redes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/analisis.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/analisis.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/analisisarchivo.py" beforeDir="false" afterPath="$PROJECT_DIR$/misc/analisisarchivo.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/estadistica.py" beforeDir="false" afterPath="$PROJECT_DIR$/misc/estadistica.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/gui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/imagen_bienvenida.png" beforeDir="false" afterPath="$PROJECT_DIR$/misc/imagen_bienvenida.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/misc/prueba.py" beforeDir="false" afterPath="$PROJECT_DIR$/misc/prueba.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/test_analisis.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/test_analisis.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,6 +113,7 @@
       <workItem from="1717319706900" duration="3310000" />
       <workItem from="1717399430391" duration="3641000" />
       <workItem from="1717426645615" duration="8019000" />
+      <workItem from="1717441210829" duration="2202000" />
     </task>
     <task id="LOCAL-00001" summary="add">
       <option name="closed" value="true" />
