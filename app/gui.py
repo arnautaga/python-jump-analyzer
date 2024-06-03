@@ -21,6 +21,7 @@ class GUI:
         self.password = tk.Entry
 
         self.tema = "Light"
+        #self.temas = {"Light": , "Dark":}
 
         self.root.title("POLI[LOCURA]")
         self.root.geometry("750x600")
@@ -28,6 +29,11 @@ class GUI:
 
         self.crear_ventana_principal()
         self.root.mainloop()
+
+    def barra_menu(self):
+        menubar = tk.Menu(self.root)
+        menubar.add_command(label="Home", command=lambda: self.menu(self.logeado))
+        self.root.config(menu=menubar)
 
     def crear_ventana_principal(self):
         self.limpiar_ventana()
@@ -54,7 +60,6 @@ class GUI:
 
     def acceder_como_invitado(self):
         self.menu(False)
-
 
     def procesar_inicio_sesion(self):
         usuario = self.usuario_entry.get()
@@ -135,13 +140,14 @@ class GUI:
 
     def cambiar_tema(self, tema):
         self.tema = tema
-        if self.tema == 'Dark':
+        if tema == 'Dark':
             self.root.configure(background='gray15')
         elif self.tema == 'Light':
             self.root.configure(background='light gray')
 
     def pantalla_ajustes(self):
         self.limpiar_ventana()
+        self.barra_menu()
 
         tk.Label(self.root, text='Temas', font='bold').pack(pady=(25, 15))
 
@@ -154,8 +160,9 @@ class GUI:
 
     def pantalla_reglas(self):
         self.limpiar_ventana()
+        self.barra_menu()
+
         tk.Label(self.root, text='¿Cómo se debe realizar el salto?', font='bold').pack(pady=(25, 15))
-        tk.Label
 
         tk.Label(self.root,
                  text=''
@@ -164,6 +171,7 @@ class GUI:
 
     def crear_pantalla_analisis(self):
         self.limpiar_ventana()
+        self.barra_menu()
 
         datos_frame = tk.Frame(self.root)
         graficas_frame = tk.Frame(self.root)
@@ -181,6 +189,9 @@ class GUI:
         tk.Button(datos_frame, text='Seleccionar', command=lambda: self.open_file()).pack(pady=5)
 
         return datos_frame, graficas_frame
+
+    def crear_pantalla_ranking(self):
+        self.limpiar_ventana()
 
     def crear_menu_base(self):
         tk.Label(self.root, text="MENÚ", font=('bold', 30)).pack(pady=5)
@@ -213,6 +224,7 @@ class GUI:
     def menu(self, logeado):
         self.logeado = logeado
         self.limpiar_ventana()
+        self.barra_menu()
 
         self.crear_menu_base()
 
