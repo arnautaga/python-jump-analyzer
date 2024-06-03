@@ -8,6 +8,10 @@ class Redes:
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     def iniciar_sesion(self, username, password, gui):
+        print("Inicio de sesión exitoso.")
+        self.username = username
+        gui.menu(True)
+        '''
         ip = self.obtener_ip()
         if ip:
             #try:
@@ -36,7 +40,7 @@ class Redes:
             #except Exception as e:
                 #print("Error al conectar al servidor:", e)
         else:
-            print("No se pudo obtener la dirección IP.")
+            print("No se pudo obtener la dirección IP.")'''
 
 
     def cerrar_sesion(self):

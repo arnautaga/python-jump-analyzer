@@ -17,6 +17,9 @@ class GUI:
         self.masa_entry = tk.Entry
         self.masa = 0
 
+        self.usuario_entry = tk.Entry
+        self.password = tk.Entry
+
         self.tema = "Light"
 
         self.root.title("POLI[LOCURA]")
@@ -52,16 +55,24 @@ class GUI:
     def acceder_como_invitado(self):
         self.menu(False)
 
+
+    def procesar_inicio_sesion(self):
+        usuario = self.usuario_entry.get()
+        password = self.password_entry.get()
+        self.arqred.iniciar_sesion(usuario, password, self)
+
     def ventana_iniciar_sesion(self, bool=True):
         self.limpiar_ventana()
 
         tk.Label(self.root, text="Iniciar sesión", font=('bold', 18)).pack(pady=8)
 
         tk.Label(self.root, text="Nombre de usuario:").pack(pady=5)
-        self.usuario_entry = tk.Entry(self.root).pack(pady=5)
+        self.usuario_entry = tk.Entry(self.root)
+        self.usuario_entry.pack(pady=5)
 
         tk.Label(self.root, text="Contraseña:").pack(pady=5)
-        self.password_entry = tk.Entry(self.root, show="*").pack(pady=5)
+        self.password_entry = tk.Entry(self.root, show="*")
+        self.password_entry.pack(pady=5)
 
         tk.Button(self.root, text="Iniciar sesión", command=self.procesar_inicio_sesion, width=13).pack(pady=12)
 
@@ -69,11 +80,6 @@ class GUI:
             label_error = tk.Label(self.root,
                                    text="Usuario o contraseña incorrectos. Por favor, inténtelo de nuevo.", fg="red")
             label_error.pack(pady=5)
-
-    def procesar_inicio_sesion(self):
-        usuario = self.usuario_entry.get()
-        password = self.password_entry.get()
-        self.arqred.iniciar_sesion(usuario, password, self)
 
     def analizar_archivo(self):
         datos = self.analisis.get_datos_analisis(self.file_path, self.masa)
@@ -139,9 +145,12 @@ class GUI:
 
         tk.Label(self.root, text='Temas', font='bold').pack(pady=(25, 15))
 
-        tk.Button(self.root, text="Tema claro", command= lambda: self.cambiar_tema('Light'), height=2, width=25).pack(pady=(55, 20))
-        tk.Button(self.root, text="Tema oscuro", command= lambda: self.cambiar_tema('Dark'), height=2, width=25).pack(pady=20)
-        tk.Button(self.root, text="Tema del sistema", command= lambda: self.cambiar_tema(darkdetect.theme()), height=2, width=25).pack(pady=20)
+        tk.Button(self.root, text="Tema claro", command=lambda: self.cambiar_tema('Light'), height=2, width=25).pack(
+            pady=(55, 20))
+        tk.Button(self.root, text="Tema oscuro", command=lambda: self.cambiar_tema('Dark'), height=2, width=25).pack(
+            pady=20)
+        tk.Button(self.root, text="Tema del sistema", command=lambda: self.cambiar_tema(darkdetect.theme()), height=2,
+                  width=25).pack(pady=20)
 
     def pantalla_reglas(self):
         self.limpiar_ventana()
@@ -150,7 +159,8 @@ class GUI:
 
         tk.Label(self.root,
                  text=''
-        'Para realizar un salto correctamente, sigue estos pasos: \n\n\n1. Sujeta firmemente el móvil a la pelvis con una banda elástica, preferiblemente en un lateral,\nentre la cadera y la cresta ilíaca.\n\n2. Desde una posición agachada, cruza los brazos sobre el pecho o apóyalos en la cintura,\ncuidando de no tocar el móvil.\n\n3. Configura el dispositivo para que emita un aviso de 5 segundos y espere otros\n5 segundos para la medición (configuración predeterminada).\n\n4. Tras el aviso, espera al menos dos segundos en reposo para calibrar la medida. Luego, salta\nverticalmente con toda tu fuerza.\n\n5. Al caer, permanece erguido y quieto hasta oír el siguiente aviso.\n\n6. Finalmente, envía los datos obtenidos por correo o cualquier otro método, asegurándose de\nidentificar claramente la medición.', font=('Arial', 12)).pack(pady=10)
+                      'Para realizar un salto correctamente, sigue estos pasos: \n\n\n1. Sujeta firmemente el móvil a la pelvis con una banda elástica, preferiblemente en un lateral,\nentre la cadera y la cresta ilíaca.\n\n2. Desde una posición agachada, cruza los brazos sobre el pecho o apóyalos en la cintura,\ncuidando de no tocar el móvil.\n\n3. Configura el dispositivo para que emita un aviso de 5 segundos y espere otros\n5 segundos para la medición (configuración predeterminada).\n\n4. Tras el aviso, espera al menos dos segundos en reposo para calibrar la medida. Luego, salta\nverticalmente con toda tu fuerza.\n\n5. Al caer, permanece erguido y quieto hasta oír el siguiente aviso.\n\n6. Finalmente, envía los datos obtenidos por correo o cualquier otro método, asegurándose de\nidentificar claramente la medición.',
+                 font=('Arial', 12)).pack(pady=10)
 
     def crear_pantalla_analisis(self):
         self.limpiar_ventana()
@@ -178,8 +188,10 @@ class GUI:
         frame = tk.Frame(self.root)
         frame.pack(fill=tk.X, expand=False, pady=65)
 
-        tk.Button(frame, text="Ajustes", command=self.pantalla_ajustes, height=2, width=15).grid(row=0, column=1, padx=125)
-        tk.Button(frame, text="Reglas", command=self.pantalla_reglas, height=2, width=15).grid(row=0, column=2, padx=125)
+        tk.Button(frame, text="Ajustes", command=self.pantalla_ajustes, height=2, width=15).grid(row=0, column=1,
+                                                                                                 padx=125)
+        tk.Button(frame, text="Reglas", command=self.pantalla_reglas, height=2, width=15).grid(row=0, column=2,
+                                                                                               padx=125)
 
         tk.Button(self.root, text="Analizar salto", command=lambda: self.crear_pantalla_analisis(), height=3,
                   width=30).pack(pady=10)
