@@ -35,6 +35,11 @@ class GUI:
         menubar.add_command(label="Home", command=lambda: self.menu(self.logeado))
         self.root.config(menu=menubar)
 
+    def barra_inicio(self):
+        menubar = tk.Menu(self.root)
+        menubar.add_command(label="Inicio", command=lambda: self.crear_ventana_principal())
+        self.root.config(menu=menubar)
+
     def crear_ventana_principal(self):
         self.limpiar_ventana()
 
@@ -68,6 +73,7 @@ class GUI:
 
     def ventana_iniciar_sesion(self, bool=True):
         self.limpiar_ventana()
+        self.barra_inicio()
 
         tk.Label(self.root, text="Iniciar sesión", font=('bold', 18)).pack(pady=8)
 
@@ -143,7 +149,7 @@ class GUI:
         if tema == 'Dark':
             self.root.configure(background='gray15')
         elif self.tema == 'Light':
-            self.root.configure(background='light gray')
+            self.root.configure(background='SystemButtonFace')
 
     def pantalla_ajustes(self):
         self.limpiar_ventana()
@@ -201,21 +207,16 @@ class GUI:
 
         for i in range(total_rows):
             for j in range(total_columns):
-                color = "black"
-
-                if i <= 3:
-                    if i == 1:
-                        color = "gold2"
-                    elif i == 2:
-                        color = "slate gray"
-                    elif i == 3:
-                        color = "brown"
-                    e = tk.Entry(frame, width=12, fg=color, font=('Arial', 14, "bold"))
+                if i == 0:
+                    e = tk.Entry(frame, width=12, font=('Arial', 15, "bold"))
+                elif i > 0 and i <= 3:
+                    e = tk.Entry(frame, width=12, font=('Arial', 14, "bold"))
                 else:
-                    e = tk.Entry(frame, width=12, fg=color, font=('Arial', 14))
+                    e = tk.Entry(frame, width=12, font=('Arial', 14))
 
                 e.grid(row=i, column=j)
                 e.insert(tk.END, leaderboard_data[i][j])
+                e.config(state="disabled")
 
     def crear_pantalla_ranking(self):
         self.limpiar_ventana()
@@ -225,11 +226,58 @@ class GUI:
         leaderboard_text.pack(pady=5)
 
         tk.Label(self.root, text="Cargar datos del leaderboard:\n(esta acción puede tardar un poco)").pack(pady=10)
-        tk.Button(self.root, text="Cargar", command= lambda: self.cargar_ranking(), height=2, width=10).pack(pady=(0, 10))
+        tk.Button(self.root, text="Cargar", command=lambda: self.cargar_ranking(), height=2, width=10).pack(
+            pady=(0, 10))
+
+    def enviar_datos(self, nombre, grupo, altura, fecha):
+        if nombre and grupo and altura and fecha:
+            res = self.arqred.enviar_salto(nombre, grupo, altura, fecha)
+
+            status_text = tk.Label(self.root)
+            data_text = tk.Label(self.root)
+
+            if res.startswith("200"):
+                status_text.config(text="Datos enviados. ¡Estás en el top 10!")
+                status_text.pack(pady=(10, 5))
+                data_text.config(text=f"| {nombre:<10} | {grupo:^11} | {altura:^6} | {fecha:^10} |")
+                data_text.pack()
+            elif res.startswith("201"):
+                status_text.config(text="Datos enviados. Lo sentimos, no estás en el top 10.")
+                status_text.pack(pady=(10, 5))
+                data_text.config(text=f"| {nombre:<10} | {grupo:^11} | {altura:^6} | {fecha:^10} |")
+                data_text.pack()
+            else:
+                status_text.config(text="Ha ocurrido un error.")
+                status_text.pack(pady=(10, 5))
+
+        else:
+            tk.messagebox.showerror('Error', 'Faltan campos por rellenar.')
 
     def crear_pantalla_envio(self):
         self.limpiar_ventana()
         self.barra_menu()
+
+        tk.Label(self.root, text="Enviar datos del salto", font="bold").pack(pady=5)
+
+        tk.Label(self.root, text="Nombre:").pack(pady=(20, 5))
+        nombre_entry = tk.Entry(self.root)
+        nombre_entry.pack(pady=5)
+
+        tk.Label(self.root, text="Grupo:").pack(pady=(10, 5))
+        grupo_entry = tk.Entry(self.root)
+        grupo_entry.pack(pady=5)
+
+        tk.Label(self.root, text="Altura").pack(pady= (10, 5))
+        altura_entry = tk.Entry(self.root)
+        altura_entry.pack(pady=5)
+
+        tk.Label(self.root, text="Fecha:").pack(pady=(10, 5))
+        fecha = self.arqred.formato_fecha()
+        tk.Label(self.root, text=fecha).pack(pady=5)
+
+        tk.Button(self.root, text="Enviar",
+                  command=lambda: self.enviar_datos(nombre_entry.get(), grupo_entry.get(), altura_entry.get(), fecha),
+                  height=2, width=15).pack(pady=25)
 
     def crear_menu_base(self):
         tk.Label(self.root, text="MENÚ", font=('bold', 30)).pack(pady=5)
@@ -245,25 +293,15 @@ class GUI:
         tk.Button(self.root, text="Analizar salto", command=lambda: self.crear_pantalla_analisis(), height=3,
                   width=30).pack(pady=10)
 
-    def crear_elementos_logeado(self, enviar_frame, leaderboard_frame):
-        tk.Label(enviar_frame, text="Enviar").pack(pady=5)
-        tk.Button(enviar_frame, text="Enviar", command=lambda: print("Enviar")).pack(pady=5)
-
-        # Sección de leaderboard
-        leaderboard_data = self.arqred.obtener_leaderboard()
-        tk.Label(leaderboard_frame, text="Leaderboard").pack(pady=5)
-
-        leaderboard_info = "\n".join([
-            f"Usuario: {entry['nombre']}, Grupo: {entry['grupo_ProMu']}, "
-            f"Altura: {entry['altura']}, Fecha: {entry['fecha']}"
-            for entry in leaderboard_data])
-        tk.Label(leaderboard_frame, text=leaderboard_info).pack(pady=5)
+    def cerrar_sesion(self):
+        answer = tk.messagebox.askokcancel("Cerrar sesión", "¿Desea cerrar sesión?")
+        if answer:
+            self.arqred.cerrar_sesion()
+            self.crear_ventana_principal()
 
     def menu(self, logeado):
         self.logeado = logeado
         self.limpiar_ventana()
-        self.barra_menu()
-
         self.crear_menu_base()
 
         if logeado:
@@ -272,7 +310,7 @@ class GUI:
                 pady=10)
             tk.Button(self.root, text="Enviar datos de salto", command=lambda: self.crear_pantalla_envio(), height=3,
                       width=30).pack(pady=10)
-            tk.Button(self.root, text="Cerrar sesión", command=lambda: self.arqred.cerrar_sesion(), height=2,
+            tk.Button(self.root, text="Cerrar sesión", command=lambda: self.cerrar_sesion(), height=2,
                       width=15).pack(pady=40)
         else:
             tk.Button(self.root, text="Iniciar sesión", command=lambda: self.ventana_iniciar_sesion(True), height=2,

@@ -44,6 +44,7 @@ class Redes:
     def cerrar_sesion(self):
         self.sock.send("QUIT\r\n".encode())
         self.sock.close()
+        self.username = ""
 
     def obtener_ip(self):
         # Crear un socket TCP
@@ -89,13 +90,10 @@ class Redes:
 
         return self.formatear_datos_leaderboard(data)
 
-    def enviar_salto(self, grupo, altura, fecha):
-        datos = 'SEND_DATA {"nombre":"' + self.username + '", "grupo_ProMu":"' + grupo + '", "altura": ' + str(
-            altura) + ',"fecha":"' + str(fecha) + '"}\r\n'
-        print(datos)
+    def enviar_salto(self, nombre, grupo, altura, fecha):
+        datos = 'SEND_DATA {"nombre":"' + nombre + '", "grupo_ProMu":"' + grupo + '", "altura": ' + altura + ',"fecha":"' + fecha + '"}\r\n'
         self.sock.send(datos.encode())
-        print(self.sock.recv(1024).decode())
-        print(fecha)
+        return self.sock.recv(1024).decode()
 
     def formato_fecha(self):
         fecha = str(datetime.datetime.now().date())
@@ -126,4 +124,3 @@ class Redes:
             fecha[1] = "diciembre"
         fecha = str(fecha[2] + "-" + fecha[1] + "-" + fecha[0])
         return fecha
-
