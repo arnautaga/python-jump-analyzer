@@ -7,7 +7,6 @@
     <list default="true" id="7e9647cb-9191-40ce-9bda-7f79011f1837" name="Changes" comment="versión definiriva de fisica-mates casi implementada en la app. Falta lógica del main.&#10;Implementación temas, falla en algunos casos">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/gui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/redes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/redes.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,6 +110,7 @@
       <workItem from="1717096735568" duration="19000" />
       <workItem from="1717319706900" duration="3310000" />
       <workItem from="1717399430391" duration="3641000" />
+      <workItem from="1717426645615" duration="4191000" />
     </task>
     <task id="LOCAL-00001" summary="add">
       <option name="closed" value="true" />
